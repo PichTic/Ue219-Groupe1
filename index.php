@@ -28,6 +28,25 @@
       <?php
         include 'lib/db.php';
 
+        // je vérifie que l'utilisateur qui se connecte est bien enregistré dans la BD
+        $identifiant = $_GET['login'];
+        $password = $_GET['password'];
+        $con=mysqli_connect("mysql","database_user","database_password","mydatabase");
+        // Check connection
+        if (mysqli_connect_errno())
+        {
+          echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+        $qz = "SELECT id FROM members where username='".$identifiant."' and password='".$password."'" ;
+        $qz = str_replace("\'","",$qz);
+        $result = mysqli_query($con,$qz);
+        while($row = mysqli_fetch_array($result))
+        {
+          echo $row['id'];
+        }
+        mysqli_close($con);
+      }
+
           // j'initialise la connexion à la base de données
         $connect = connect($db);
 
@@ -48,12 +67,3 @@
     <script src="/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
