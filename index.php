@@ -1,8 +1,13 @@
+<?php
+session_start();
+require_once 'lib/db.php';
+require_once 'lib/form.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/custom.css">
   </head>
   <body>
   <div class="container">
@@ -10,43 +15,12 @@
       <h1>Uchi</h1>
       <small class="text-muted">Agence Immobilière</small>
     </div>
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Identifiez-vous</h2>
-
-        <label for="login" class="sr-only">Identifiant</label>
-        <input type="text" id="login" class="form-control" placeholder="Identifiant" required autofocus>
-
-        <label for="inputPassword" class="sr-only">Mot de passe</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
-      </form>
-
+      <?php
+        include 'vues/login.php';
+      ?>
       <div class="row">
       <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 alert alert-primary">
       <?php
-        include 'lib/db.php';
-
-        // je vérifie que l'utilisateur qui se connecte est bien enregistré dans la BD
-        $identifiant = $_GET['login'];
-        $password = $_GET['password'];
-        $con=mysqli_connect("mysql","database_user","database_password","mydatabase");
-        // Check connection
-        if (mysqli_connect_errno())
-        {
-          echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }
-        $qz = "SELECT id FROM members where username='".$identifiant."' and password='".$password."'" ;
-        $qz = str_replace("\'","",$qz);
-        $result = mysqli_query($con,$qz);
-        while($row = mysqli_fetch_array($result))
-        {
-          echo $row['id'];
-        }
-        mysqli_close($con);
-      }
-
           // j'initialise la connexion à la base de données
         $connect = connect($db);
 
