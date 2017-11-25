@@ -17,6 +17,11 @@ require_once 'lib/form.php';
     </div>
       <?php
         include 'vues/login.php';
+
+      if(array_key_exists('flash', $_SESSION)) {
+        echo "<p class='alert alert-success'>{$_SESSION['flash']}</p>";
+        unset($_SESSION['flash']);
+      }
       ?>
       <div class="row">
       <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 alert alert-primary">

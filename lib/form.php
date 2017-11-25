@@ -23,9 +23,10 @@ $tempData = [];
  *
  * @param string $name
  * @param bool $value
+ * @param string $option - valeur optionnelle de comparaison
  * @return bool
  */
-function check_field($name, $value)
+function check_field($name, $value, $option = '')
 {
     $output = false;
 
@@ -47,6 +48,9 @@ function check_field($name, $value)
             break;
         case 'password' :
             $output = check_password($name, $value);
+            break;
+        case 'password_confirm' :
+            $output = check_password_confirm($name, $value, $option);
             break;
     }
 
@@ -164,6 +168,26 @@ function check_password($name, $value)
 
     return false;
 }
+/**
+ * vérifie le champ password_confirm
+ *
+ * @param string $name
+ * @param string $value
+ * @param string $option
+ * @return bool
+ */
+function check_password_confirm($name, $value, $option)
+{
+
+    $value = trim($value);
+    $option = trim($option);
+
+    if ($value === $option) {
+      return true;
+    }
+
+    return false;
+}
 
 /**
  * Retourne un feedback sur un champ invalide
@@ -183,9 +207,18 @@ function errorMsg($name)
  *
  */
 
+
+ //tableau des filtres pour vue/login.php
 $filter_login = [
     'login' => FILTER_SANITIZE_STRING,
     'password' => FILTER_SANITIZE_STRING,
+];
+
+//tableau des filtres pour register.php
+$filter_register = [
+  'login' => FILTER_SANITIZE_STRING,
+  'password' => FILTER_SANITIZE_STRING,
+  'password_confirm' => FILTER_SANITIZE_STRING
 ];
 
 

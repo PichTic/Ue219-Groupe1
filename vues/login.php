@@ -65,7 +65,11 @@ if (filter_has_var(INPUT_POST, 'connexion')) {
         session_destroy();
     }
   }
+
+if(!array_key_exists('client', $_SESSION)) {
+
 ?>
+
 
 <form class="form-signin" method="POST" action="">
   <h2 class="form-signin-heading">Identifiez-vous</h2>
@@ -78,3 +82,7 @@ if (filter_has_var(INPUT_POST, 'connexion')) {
 
   <button name="connexion" class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
 </form>
+
+<?php
+}
+?>
