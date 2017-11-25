@@ -10,7 +10,7 @@ require_once 'config.php';
  * @return PDO
  */
 function connect($db) {
-  $dsn = "mysql:dbname={$db['Name']};host={$db['Server']};charset=utf8";
+  $dsn = "mysql:dbname={$db['Name']};host={$db['Server']};port={$db['Port']};charset=utf8";
 
   try {
     $connect = new PDO($dsn, $db['User'], $db['Pass']);
