@@ -205,16 +205,15 @@ function errorMsg($name)
  * @param array $names
  * @param array $messages
  */
-function display_errors($hasErrors, $messages)
+function get_errors($hasErrors, $messages)
 {
-    $output = '<div class="alert alert-danger">';
+    $output = '';
 
     foreach ($hasErrors as $name) {
         $output .= $messages[$name];
     }
-    $output .= '</div>';
 
-    echo $output;
+    return $output;
 }
 
 /**

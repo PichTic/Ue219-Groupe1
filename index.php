@@ -10,34 +10,31 @@ require_once 'lib/includes.php';
     <link rel="stylesheet" href="./css/custom.css">
 </head>
 <body>
-  <div class="container">
-    <div class="text-center">
-      <h1>Uchi</h1>
-      <small class="text-muted">Agence Immobilière</small>
-    </div>
     <?php
-    include 'vues/login.php';
-
-    flash();
+    include 'vues/nav.php';
     ?>
-        <div class="row">
-            <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 alert alert-primary">
+    <div class="container">
+        <div class="text-center">
+            <h1>Uchi</h1>
+            <small class="text-muted">Agence Immobilière</small>
             <?php
-            // j'initialise la connexion à la base de données
-            $connect = connect($db);
-
-            // je teste une simple requête
-            $sql = 'select * from clients';
-            $clients = $connect->query($sql);
-            // j'afficher le résultat en mode débug avec un var_dump()
-            var_dump($clients->fetch());
-
-            // je me déconnecte de la base de données
-            deconnect($connect);
+            flash();
             ?>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
+            </div>
+            <div class="col-md-4">
+                <?php
+                include 'vues/login.php';
+                ?>
             </div>
         </div>
-
     </div>
     <script src="./js/jquery-3.2.1.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
