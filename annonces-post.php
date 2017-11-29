@@ -11,7 +11,7 @@
       <small class="text-muted">Agence Immobilière</small>
     </div>
       </div>
-      
+
       <form class="form-signin">
         <h2 class="form-signin-heading">Publiez votre annonce</h2>
         <div class="col-auto">
@@ -23,7 +23,7 @@
         <option value="4">Château</option>
         <option value="5">Local commercial</option>
         <option value="6">Parking/box</option>
-    </select>  
+    </select>
     </div>
           <br>
  <div class="form-row">
@@ -41,11 +41,11 @@
     <input type="text" class="form-control" id="inputAddress" placeholder="Adresse postale">
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-7">
       <label for="inputCity">Ville</label>
       <input type="text" class="form-control" id="inputCity">
     </div>
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-5">
       <label for="inputZip">Code postal</label>
       <input type="text" class="form-control" id="inputZip">
     </div>
@@ -54,10 +54,10 @@
   </div>
 <button type="submit" class="btn btn-lg btn-primary btn-block">Valider et envoyer l'annonce</button>
 </form>
-      
-      
-      
-      
+
+
+
+
        <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
   </body>
