@@ -1,0 +1,3 @@
+# Mesure de sécurité:
+# Interdit l'accès direct frauduleux aux fichiers de ce dossier
+Deny From All

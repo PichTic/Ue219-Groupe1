@@ -1,20 +1,30 @@
 <?php
+
 /**
- * Vars
+ * Variables
+ * ---------
  * $hasErrors = un array de $name des inputs invalides
- * $tempData = un array des données temporaires du form.
+ * $tempData = un array des données temporaires du form, référencé par le nom de l'input :
+ *  - s'il y a une erreur : le message d'erreur
+ *  - sinon la valeur du champ.
  */
 $hasErrors = [];
 $tempData = [];
 
 /**
- * Functions de contrôle du formulaire reprises de la semaine 3 et modifiées pour cette semaine.
- * En particulier, le retour des fonctions 'check_X' qui renvoient un Booléen.
+ * Functions de contrôle des champs.
+ * ---------------------------------
+ * La fonction check_field() permet de lancer la vérification supplémentaire après
+ * celle effectuée en premier par filter_input_array(), car elle peut être
+ * insuffisante. Les champs sont vérifiés en fonction de leur nom (name de l'input)
+ * et de leur valeur.
  *
- * - Si les fonctions renvoient 'TRUE', je peux initialiser ma session avec les données de
- * '$tempData',
- * - Si au moins une des fonctions renvoient 'FALSE', je récupère le '$name' de l'input et
- * je renseigne '$hasErrors' afin d'en informer l'utilisateur.
+ * Les autres fonction check_XXX s'occupent de chaque vérification. Chacune renvoie
+ * un booléen :
+ *  - Si les fonctions renvoient 'TRUE', la vérification est OK et on peut continuer
+ * le traitement du formulaire.
+ *  - Si au moins une des fonctions renvoie 'FALSE', je récupère le '$name' de l'input
+ * en erreur et je renseigne '$hasErrors'.
  */
 
 /**
@@ -141,7 +151,7 @@ function check_login($name, $value)
 {
     $value = trim($value);
 
-    if (! is_null($value) && false != $value && strlen($value) > 0) {
+    if (! is_null($value) && false != $value && strlen($value) > 3) {
         return true;
     }
 
@@ -188,6 +198,18 @@ function check_password_confirm($name, $value, $option)
 }
 
 /**
+ * Feedbacks des erreurs
+ * ---------------------
+ * Si une erreur est détectée via check_field() (au moins un FALSE), il faut
+ * généré le feedback de l'erreur.
+ *  - La fonction errorMsg() permet de créer un feedback sur la base du nom du
+ * champ (name de l'input). On a 2 arrays ($messages et $inputs) qui servent
+ * de "dictionnaire" afin de pouvoir avoir un message compréhensible.
+ *  - La fonction get_errors() permet de boucler sur la variable $hasErrors
+ * afin de concaténer les messages d'erreurs en une seule chaîne de caractères.
+ */
+
+/**
  * Retourne un feedback sur un champ invalide.
  *
  * @param string $name
@@ -196,7 +218,19 @@ function check_password_confirm($name, $value, $option)
  */
 function errorMsg($name)
 {
-    return "<p>Le champ <em>{$name}</em> est invalide</p>";
+    $messages = [
+        'login'            => "l'identifiant doit avoir au moins 3 caractères",
+        'password'         => 'le mot de passe doit avoir au moins 8 caractères',
+        'password_confirm' => 'les deux mots de passe ne sont pas identiques',
+    ];
+
+    $inputs = [
+        'login'            => 'identifiant',
+        'password'         => 'mot de passe',
+        'password_confirm' => 'confirmation du mot de passe',
+    ];
+
+    return "<p>Le champ <strong>{$inputs[$name]}</strong> est invalide : {$messages[$name]}.</p>";
 }
 
 /**
@@ -217,18 +251,53 @@ function get_errors($hasErrors, $messages)
 }
 
 /**
- * Configuration des filtres à appliquer aux champs du formulaire.
+ * Configuration des filtres
+ * -------------------------
+ * La première vérification des champs de formulaire se fait par les
+ * filtres PHP. Ici on définit les filtres spécifiques par formulaires.
+ *  - $filter_login contient les filtres pour le form d'identification
+ *  - $filter_register contient les filtres pour le form de création de
+ * compte.
+ *
+ * On n'encode pas les caractères spéciaux des identifiants et mot de passe.
+ * On y appliquera donc juste un filtre personnalisé 'sanitize_string' qui ôte
+ * les espaces aux extrémités d'une string (trim) et les balises HTML (strip_tags).
  */
 
- //tableau des filtres pour vue/login.php
+/**
+ * Nettoie une chaîne de caractère.
+ *
+ * @param [type] $value
+ */
+function sanitize_string($value)
+{
+    return trim(strip_tags($value));
+}
+
+ //tableau des filtres pour vues/login.php
 $filter_login = [
-    'login'    => FILTER_SANITIZE_STRING,
-    'password' => FILTER_SANITIZE_STRING,
+    'login' => [
+        'filter'  => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+    'password' => [
+        'filter'  => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
 ];
 
 //tableau des filtres pour register.php
 $filter_register = [
-  'login'            => FILTER_SANITIZE_STRING,
-  'password'         => FILTER_SANITIZE_STRING,
-  'password_confirm' => FILTER_SANITIZE_STRING,
+  'login' => [
+        'filter'  => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+  'password' => [
+        'filter'  => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+  'password_confirm' => [
+        'filter'  => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
 ];

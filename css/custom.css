@@ -1,9 +1,26 @@
+/**__________________________________________________________________________
+ * Composants globaux des page
+ *
+ */
 body {
   padding-bottom: 40px;
   background-color: #efefef;
 }
 
+#main {
+  margin-top: 2rem;
+}
+#title {
+  margin-bottom: 2em;
+}
 
+
+
+
+/**__________________________________________________________________________
+ * Formulaires de connexion et création de compte
+ *
+ */
 .form-signin {
   max-width: 330px;
   padding: 15px;
