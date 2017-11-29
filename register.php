@@ -1,8 +1,9 @@
 <?php
+
 session_start();
 require_once 'lib/includes.php';
 
-//Si un utilisateur déjà logué veux accéder à cette page
+//Si un utilisateur déjà connecté veux accéder à cette page
 //il sera redirigé vers index.php
 guest_only();
 ?>
@@ -14,20 +15,21 @@ guest_only();
 </head>
 <body>
     <?php
+    // inclusion de la nav
     include 'vues/nav.php';
     ?>
-    <div class="container">
-        <div class="text-center">
-            <h1>Uchi</h1>
-            <small class="text-muted">Agence Immobilière</small>
+    <div id="main" class="container">
+        <div id="title" class="text-center border border-secondary border-left-0 border-right-0 border-top-0">
+            <h1>Créer un compte</h1>
+            <h2 class="text-muted h3">Agence Immobilière UCHI</h2>
         </div>
 
         <?php
+            // affiche le message de flash stocké dans $_SESSION['error_register'] s'il y en a
             flash('danger', 'error_register');
         ?>
 
         <form class="form-signin" method="POST" action="">
-            <h2 class="form-signin-heading">Enregistrez-vous</h2>
 
             <label for="login" class="sr-only">Identifiant</label>
             <input name="login" type="text" id="login" class="form-control" placeholder="Identifiant" autofocus>
