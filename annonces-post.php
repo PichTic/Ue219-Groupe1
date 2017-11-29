@@ -1,3 +1,11 @@
+<?php
+session_start();
+require_once 'lib/includes.php';
+
+//Si un utilisateur déjà logué veux accéder à cette page
+//il sera redirigé vers index.php
+auth_only();
+?>
 <!DOCTYPE html>
 <html lang="fr">
   <head>
