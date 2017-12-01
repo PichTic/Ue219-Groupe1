@@ -7,6 +7,10 @@ require_once 'lib/includes.php';
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ue219 Groupe1</title>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/custom.css">
 </head>
@@ -28,14 +32,15 @@ require_once 'lib/includes.php';
         </div>
         <div class="row">
             <div class="col-md-8">
-                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                <?php
+                    include 'vues/annonces.php';
+                ?>
             </div>
             <div class="col-md-4">
 
                 <h2 class="text-center h4">Agence Uchi</h2>
                 <h3 class="mb-2 text-muted text-center h6">Notre Agence Immobilière</h3>
-                <p class="card-text">Bienvenue sur notre page ! Vous pouvez librement consulter nos annonces, ou déposer la vôtre librement. Pour cela, vous devrez avoir un compte.</p>
+                <p class="card-text">Bienvenue sur notre page ! Vous pouvez librement consulter nos annonces, ou déposer la vôtre. Pour cela, vous devrez avoir un compte.</p>
 
                 <?php
                 // inclusion du form de login

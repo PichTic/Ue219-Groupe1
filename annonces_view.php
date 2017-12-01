@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/custom.css">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Ue219 Groupe1</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/custom.css">
+</head>
   <body>
   <div class="container">
     <div class="text-center">
@@ -11,7 +15,7 @@
       <small class="text-muted">Agence Immobilière</small>
     </div>
       </div>
-      
+
       <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
@@ -40,8 +44,8 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-      
-      
+
+
         <div class="row">
   <div class="col-sm-6">
     <div class="card">
@@ -82,8 +86,8 @@
     </div>
   </div>
 </div>
-      
-      
+
+
        <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
   </body>

@@ -69,7 +69,7 @@ function add_flash($message, $key = 'flash')
     // on s'assure que la clé de stockage
     // ne va pas écraser les données en session
     // de l'utilisateur connecté
-    if ('client' !== $key) {
+    if ($key !== 'client') {
         $_SESSION[$key] = $message;
 
         return true;

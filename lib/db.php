@@ -132,3 +132,14 @@ function user_create($db, $login, $password)
 
     return $user_id;
 }
+
+function ads_list($db)
+{
+   $sql = "SELECT * FROM `logements` LIMIT 10";
+   $connect = connect($db);
+   $query = $connect->prepare($sql);
+   $query->execute();
+   $data = $query->fetchAll();
+   deconnect($connect);
+   return $data;
+}
