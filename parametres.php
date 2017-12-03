@@ -4,12 +4,13 @@
     auth_only();
 
     //tentative de connexion à la bdd
-    try{
+    $bdd=connect($db);
+    /*try{
          // Mettez un nom de base erroné pour voir apparaître le message d'erreur
         $bdd=new PDO('mysql:host=localhost;dbname=projetue219','root','');
     }catch(Exception $e){
         die('Erreur : ' . $e->getMessage());
-    }
+    }*/
 
     //récupération d'infos de la bdd
     $reponse=$bdd->query('SELECT * FROM clients WHERE identifiant=\''.$_SESSION['client']['login'].'\'');
