@@ -22,7 +22,8 @@ if (filter_has_var(INPUT_POST, 'create')) {
 
     // s'il n'y a pas des d'erreurs
     if (0 === count($hasErrors)) {
-        $data = adDuplicate($db, $tempData['adresse'], $tempData['type'], $tempData['surface']);
+        $adresse = "{$tempData['adresse']}, {$tempData['zipcode']} {$tempData['city']}";
+        $data = adDuplicate($db, $adresse, $tempData['type'], $tempData['surface']);
         $created = false;
 
         // s'il n'y as pas d'annonce en doublon

@@ -69,7 +69,7 @@ function add_flash($message, $key = 'flash')
     // on s'assure que la clé de stockage
     // ne va pas écraser les données en session
     // de l'utilisateur connecté
-    if ($key !== 'client') {
+    if ('client' !== $key) {
         $_SESSION[$key] = $message;
 
         return true;
@@ -124,35 +124,5 @@ function guest_only()
     if (array_key_exists('client', $_SESSION)) {
         header('Location: index.php');
         exit;
-    }
-}
-
-/**
- * Utilitaire pour le débug
- * var_dump des variables et arrête l'exécution du script en cours.
- * dd car "dump and die".
- *
- * @param mixed ...$args
- */
-function dd(...$args)
-{
-    foreach ($args as $arg) {
-        var_dump($arg);
-    }
-
-    die();
-}
-
-/**
- * Utilitaire pour le débug
- * var_dump des variables et poursuit l'exécution du script en cours.
- * vd car "variable dump".
- *
- * @param mixed ...$args
- */
-function vd(...$args)
-{
-    foreach ($args as $arg) {
-        var_dump($arg);
     }
 }

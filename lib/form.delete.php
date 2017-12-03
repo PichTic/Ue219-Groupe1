@@ -1,20 +1,12 @@
 <?php
 
 if (filter_has_var(INPUT_GET, 'delete_ad')) {
-    // on filtre nos champs
     $resultats = filter_input_array(INPUT_GET, $filter_delete);
-    // pour chaque champs
     foreach ($resultats as $name => $value) {
-        // on vérifie le champ
-        // si la vérification est conluante
         if (check_field($name, $value)) {
-            // on ajoute sa valeur dans l'array de donnée
             $tempData[$name] = $value;
         } else {
-            //si la vérification n'est pas bonne
-            //on garde en mémoire le nom du champ invalide
             $hasErrors[] = $name;
-            // et on récupère le feedback du champ invalide
             $tempData[$name] = errorMsg($name);
         }
     }
@@ -33,17 +25,15 @@ if (filter_has_var(INPUT_GET, 'delete_ad')) {
         }
 
         if ($deleted) {
-          add_flash("L'annonce a été supprimée");
-          header('Location: mesAnnonces.php');
-          exit;
+            add_flash("L'annonce a été supprimée");
+            header('Location: mesAnnonces.php');
+            exit;
         }
-
     }
+
     if (count($hasErrors) > 0) {
-      // sinon, on donne le feedback des champs invalides
-      add_flash(get_errors($hasErrors, $tempData), 'error_delete');
-      // et on détruit la session
-      header('Location: mesAnnonces.php');
-      exit;
-  }
+        add_flash(get_errors($hasErrors, $tempData), 'error_delete');
+        header('Location: mesAnnonces.php');
+        exit;
+    }
 }

@@ -46,15 +46,27 @@ auth_only();
           </div>
           <div class="form-group col-md-6">
             <label for="surface" class="sr-only">Surface</label>
-            <input class="form-control" type="number" id="surface" name="surface" placeholder="Surface en M2">
+            <input class="form-control" type="number" id="surface" name="surface" placeholder="Surface en M2" value="<?php echo (array_key_exists('surface', $tempData)) ? $tempData['surface'] : '' ?>">
           </div>
         </div>
 
         <div class="row">
-          <div class="form-group col-md-12">
-            <label for="inputAddress" class="sr-only">Adresse</label>
-            <textarea cols="80" rows="5" class="form-control" id="inputAddress" name="adresse" placeholder="Adresse Complete"></textarea>
+
+          <div class="form-group col-md-6">
+            <label for="adresse" class="sr-only">Adresse</label>
+            <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Adresse" value="<?php echo (array_key_exists('adresse', $tempData)) ? $tempData['adresse'] : '' ?>">
           </div>
+
+          <div class="form-group col-md-3">
+            <label for="zipcode" class="sr-only">Ville</label>
+            <input type="number" class="form-control" id="zipcode" name="zipcode" placeholder="Code Postale" value="<?php echo (array_key_exists('zipcode', $tempData)) ? $tempData['zipcode'] : '' ?>">
+          </div>
+
+          <div class="form-group col-md-3">
+            <label for="city" class="sr-only">Ville</label>
+            <input type="text" class="form-control" id="city" name="city" placeholder="Ville" value="<?php echo (array_key_exists('city', $tempData)) ? $tempData['city'] : '' ?>">
+          </div>
+
         </div>
       <button name="create" type="submit" class="btn btn-lg btn-primary btn-block">Publier l'annonce</button>
     </form>

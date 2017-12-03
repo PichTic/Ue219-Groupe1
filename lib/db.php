@@ -135,67 +135,75 @@ function user_create($db, $login, $password)
 
 function ads_list($db)
 {
-   $sql = "SELECT * FROM `logements` LIMIT 10";
-   $connect = connect($db);
-   $query = $connect->prepare($sql);
-   $query->execute();
-   $data = $query->fetchAll();
-   deconnect($connect);
-   return $data;
+    $sql = 'SELECT * FROM `logements`';
+
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+    $query->execute();
+
+    $data = $query->fetchAll();
+
+    deconnect($connect);
+
+    return $data;
 }
 
-function adCreate($db, $adresse, $type, $surface, $id) {
-  $sql = 'INSERT INTO `logements` (`adresse`, `type`, `surface`, `client_id`) VALUES (:adresse, :type, :surface, :client_id)';
-  $ad_id = false;
-  $connect = connect($db);
-  $query = $connect->prepare($sql);
-  $created = $query->execute([
-      'adresse' => $adresse,
-      'type' => $type,
-      'surface' => $surface,
-      'client_id' => $id
-  ]);
-  if ($created) {
-    $ad_id = $connect->lastInsertId();
+function adCreate($db, $adresse, $type, $surface, $id)
+{
+    $sql = 'INSERT INTO `logements` (`adresse`, `type`, `surface`, `client_id`) VALUES (:adresse, :type, :surface, :client_id)';
+    $ad_id = false;
+
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+    $created = $query->execute([
+        'adresse'   => $adresse,
+        'type'      => $type,
+        'surface'   => $surface,
+        'client_id' => $id,
+    ]);
+
+    if ($created) {
+        $ad_id = $connect->lastInsertId();
     }
-  deconnect($connect);
-  return $ad_id;
+
+    deconnect($connect);
+
+    return $ad_id;
 }
 
-function adDuplicate($db, $adresse, $type, $surface) {
-  // La requête SQL : recherche d'une annonce précise
-  $sql = 'SELECT * FROM `logements` WHERE `adresse` = :adresse AND `type` = :type AND `surface` = :surface';
-  // connexion à la bd
-  $connect = connect($db);
-  // préparation de la requête
-  $query = $connect->prepare($sql);
+function adDuplicate($db, $adresse, $type, $surface)
+{
+    // La requête SQL : recherche d'une annonce précise
+    $sql = 'SELECT * FROM `logements` WHERE `adresse` = :adresse AND `type` = :type AND `surface` = :surface';
+    // connexion à la bd
+    $connect = connect($db);
+    // préparation de la requête
+    $query = $connect->prepare($sql);
 
-  $query->bindParam(':adresse', $adresse, PDO::PARAM_STR);
-  $query->bindParam(':type', $type, PDO::PARAM_STR);
-  $query->bindParam(':surface', $surface, PDO::PARAM_INT);
+    $query->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+    $query->bindParam(':type', $type, PDO::PARAM_STR);
+    $query->bindParam(':surface', $surface, PDO::PARAM_INT);
 
-  $query->execute();
-  // récupération des données
-  $data = $query->fetchAll();
-  // deconnexion
-  deconnect($connect);
+    $query->execute();
+    // récupération des données
+    $data = $query->fetchAll();
+    // deconnexion
+    deconnect($connect);
 
-  return $data;
+    return $data;
 }
 
 /**
- *
  * @see http://php.net/manual/en/pdostatement.bindparam.php#99698
  *
  * @param [type] $db
  * @param [type] $adresse
  * @param [type] $type
  * @param [type] $surface
- * @return void
  */
-function ads_search($db, $adresse, $type, $surface) {
-
-    $sql = "SELECT * FROM `logements` WHERE `adresse` LIKE :adresse AND `type` = :type AND `surface` = :surface";
+function ads_search($db, $adresse, $type, $surface)
+{
+    $sql = 'SELECT * FROM `logements` WHERE `adresse` LIKE :adresse AND `type` = :type AND `surface` = :surface';
 
     $adresse = empty($adresse) ? '*' : "%{$adresse}%";
     $type = empty($type) ? '*' : $type;
@@ -210,9 +218,8 @@ function ads_search($db, $adresse, $type, $surface) {
 
     $query->execute();
 
-    // $query->debugDumpParams();
-
     $data = $query->fetchAll();
+
     deconnect($connect);
 
     return $data;
@@ -220,95 +227,112 @@ function ads_search($db, $adresse, $type, $surface) {
 
 function ads_by_user($db, $client_id)
 {
-   $sql = "SELECT * FROM `logements` WHERE `client_id` = :client_id";
-   $connect = connect($db);
-   $query = $connect->prepare($sql);
-   $query->execute([
-       'client_id' => $client_id,
-   ]);
-   $data = $query->fetchAll();
-   deconnect($connect);
-   return $data;
-}
+    $sql = 'SELECT * FROM `logements` WHERE `client_id` = :client_id';
 
-
-function ad_exists($db, $client_id, $ad_id)
-{
-    $sql = "SELECT * FROM `logements` WHERE `client_id` = :client_id AND `id` = :ad_id";
     $connect = connect($db);
     $query = $connect->prepare($sql);
+
     $query->execute([
-        'client_id' => $client_id,
-        'ad_id' => $ad_id,
+       'client_id' => $client_id,
     ]);
+
     $data = $query->fetchAll();
+
     deconnect($connect);
 
     return $data;
 }
 
+function ad_exists($db, $client_id, $ad_id)
+{
+    $sql = 'SELECT * FROM `logements` WHERE `client_id` = :client_id AND `id` = :ad_id';
 
-function ad_delete($db, $id) {
-    $sql = 'DELETE FROM `logements` WHERE `id` = :id';
     $connect = connect($db);
     $query = $connect->prepare($sql);
+
+    $query->execute([
+        'client_id' => $client_id,
+        'ad_id'     => $ad_id,
+    ]);
+
+    $data = $query->fetchAll();
+
+    deconnect($connect);
+
+    return $data;
+}
+
+function ad_delete($db, $id)
+{
+    $sql = 'DELETE FROM `logements` WHERE `id` = :id';
+
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+
     $deleted = $query->execute([
-        'id' => $id
+        'id' => $id,
     ]);
 
     deconnect($connect);
+
     return $deleted;
-  }
+}
 
+function adUpdate($db, $adresse, $type, $surface, $id)
+{
+    $sql = 'UPDATE `logements` SET `adresse` = :adresse, `type` = :type,`surface` = :surface WHERE `id` = :id';
 
-  function adUpdate($db, $adresse, $type, $surface, $id) {
-    $sql = "UPDATE `logements` SET `adresse` = :adresse, `type` = :type,`surface` = :surface WHERE `id` = :id";
     $connect = connect($db);
     $query = $connect->prepare($sql);
+
     $updated = $query->execute([
         'adresse' => $adresse,
-        'type' => $type,
+        'type'    => $type,
         'surface' => $surface,
-        'id' => $id
+        'id'      => $id,
     ]);
 
     deconnect($connect);
+
     return $updated;
-  }
+}
 
-  function user_duplicate_login($db, $login, $id)
-  {
-      // La requête SQL : chercher un user avec un identifant X ?
-      $sql = 'SELECT * FROM `clients` WHERE `identifiant` = :login AND `id` <> :id ';
-      // connexion à la bd
-      $connect = connect($db);
-      // préparation de la requête
-      $query = $connect->prepare($sql);
-      // substitution de l'entrées de $login  à la place de ':login'
-      // et exécute la requête
-      $query->execute([
+function user_duplicate_login($db, $login, $id)
+{
+    // La requête SQL : chercher un user avec un identifant X et un id Y?
+    $sql = 'SELECT * FROM `clients` WHERE `identifiant` = :login AND `id` <> :id ';
+    // connexion à la bd
+    $connect = connect($db);
+    // préparation de la requête
+    $query = $connect->prepare($sql);
+    // substitution de l'entrées de $login  à la place de ':login'
+    // et exécute la requête
+    $query->execute([
           'login' => $login,
-          'id' => $id
+          'id'    => $id,
       ]);
-      // récupération des données
-      $data = $query->fetchAll();
-      // deconnexion
-      deconnect($connect);
+    // récupération des données
+    $data = $query->fetchAll();
+    // deconnexion
+    deconnect($connect);
 
-      return $data;
-  }
+    return $data;
+}
 
+function user_update($db, $login, $password, $id)
+{
+    $sql = 'UPDATE `clients` SET `identifiant` = :login, `motdepasse` = :password WHERE `id` = :id';
 
-  function user_update($db, $login, $password, $id) {
-    $sql = "UPDATE `clients` SET `identifiant` = :login, `motdepasse` = :password WHERE `id` = :id";
     $connect = connect($db);
     $query = $connect->prepare($sql);
+
     $updated = $query->execute([
-        'login' => $login,
+        'login'    => $login,
         'password' => $password,
-        'id' => $id
+        'id'       => $id,
     ]);
 
     deconnect($connect);
+
     return $updated;
-  }
+}

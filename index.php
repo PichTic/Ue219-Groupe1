@@ -15,10 +15,11 @@ require_once 'lib/includes.php';
     <link rel="stylesheet" href="./css/custom.css">
 </head>
 <body>
-    <?php
-    // inclusion de la nav
-    include 'vues/nav.php';
-    ?>
+<?php
+// inclusion de la nav
+include 'vues/nav.php';
+?>
+
     <div id="main" class="container">
         <div id="title" class="text-center border border-secondary border-left-0 border-right-0 border-top-0">
             <h1>Nos annonces</h1>
@@ -30,10 +31,11 @@ require_once 'lib/includes.php';
             flash('alert', 'auth_only');
             ?>
         </div>
+
         <div class="row">
             <div class="col-md-8">
                 <?php
-                    include 'vues/annonces.php';
+                include 'vues/annonces.php';
                 ?>
             </div>
             <div class="col-md-4">
@@ -46,10 +48,12 @@ require_once 'lib/includes.php';
                 // inclusion du form de login
                 include 'vues/login.php';
                 ?>
+
             </div>
         </div>
     </div>
-    <script src="./js/jquery-3.2.1.min.js"></script>
-    <script src="./js/bootstrap.bundle.min.js"></script>
+
+<script src="./js/jquery-3.2.1.min.js"></script>
+<script src="./js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

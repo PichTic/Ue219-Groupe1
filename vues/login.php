@@ -4,6 +4,7 @@ if (! is_auth()) :
     // affiche des éventuelles erreurs du formulaire de connexion
     flash('danger', 'error_connexion');
 ?>
+
 <form class="form-signin" method="POST" action="">
     <h2 class="form-signin-heading h4 text-center">Identifiez-vous</h2>
 
@@ -15,6 +16,7 @@ if (! is_auth()) :
 
     <button name="connexion" class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
 </form>
+
 <?php
 endif;
 ?>

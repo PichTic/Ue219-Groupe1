@@ -62,6 +62,12 @@ function check_field($name, $value, $option = '')
         case 'ad':
             $output = check_adId($name, $value);
             break;
+        case 'city':
+            $output = check_city($name, $value);
+            break;
+        case 'zipcode':
+            $output = check_zipcode($name, $value);
+            break;
     }
 
     return $output;
@@ -104,6 +110,7 @@ function check_password($name, $value)
 
     return false;
 }
+
 /**
  * vérifie le champ password_confirm.
  *
@@ -125,7 +132,6 @@ function check_password_confirm($name, $value, $option)
     return false;
 }
 
-
 /**
  * Vérifie le champ password.
  *
@@ -134,16 +140,16 @@ function check_password_confirm($name, $value, $option)
  *
  * @return bool
  */
-function check_type($name, $value) {
+function check_type($name, $value)
+{
     $value = trim($value);
 
-    if ((! is_null($value)) && (false != $value)) {
+    if (! is_null($value) && false != $value) {
         return true;
     }
-    else {
-      return false;
-    }
-  }
+
+    return false;
+}
 
 /**
  * Vérifie le champ password.
@@ -153,35 +159,60 @@ function check_type($name, $value) {
  *
  * @return bool
  */
-function check_surface($name, $value) {
+function check_surface($name, $value)
+{
     $value = intval(trim($value));
 
-    if((! is_null($value)) && (false != $value)) {
-      return true;
+    if (! is_null($value) && false != $value && $value >= 9) {
+        return true;
     }
-      return false;
+
+    return false;
 }
 
-function check_adresse($name, $value) {
+function check_adresse($name, $value)
+{
     $value = trim($value);
 
-    if((! is_null($value)) && (false != $value) && strlen($value) >= 3)  {
-      return true;
+    if (! is_null($value) && false != $value && strlen($value) >= 3 && strlen($value) < 100) {
+        return true;
     }
-      return false;
+
+    return false;
 }
 
-function check_adId($name, $value) {
+function check_adId($name, $value)
+{
     $value = intval(trim($value));
 
-    if((! is_null($value)) && (false != $value)) {
-      return true;
+    if (! is_null($value) && false != $value) {
+        return true;
     }
-      return false;
+
+    return false;
 }
 
+function check_city($name, $value)
+{
+    $value = trim($value);
 
+    if (! is_null($value) && false != $value && strlen($value) >= 2 && ! strpbrk($value, '0123456789') && strlen($value) < 100) {
+        return true;
+    }
 
+    return false;
+}
+
+function check_zipcode($name, $value)
+{
+    $value = intval(trim($value));
+
+    if (! is_null($value) && false != $value && $value > 1000 && $value < 99999) {
+        return true;
+    }
+
+    return false;
+}
 
 /**
  * Feedbacks des erreurs
@@ -208,20 +239,24 @@ function errorMsg($name)
         'login'            => "l'identifiant doit avoir au moins 3 caractères",
         'password'         => 'le mot de passe doit avoir au moins 8 caractères',
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
-        'type' => "ce type n'est pas disponible",
-        'surface' => 'La surface doit être supérieure à 9m<sup>2</sup>',
-        'adresse' => "l'adresse doit contenir au moins 3 caractères",
-        'ad'=> "cette annonce n'existe pas ou vous n'en êtes pas l'auteur"
+        'type'             => "ce type n'est pas disponible",
+        'surface'          => 'La surface doit être supérieure à 9m<sup>2</sup>',
+        'adresse'          => "l'adresse doit contenir au moins 3 caractères",
+        'ad'               => "cette annonce n'existe pas ou vous n'en êtes pas l'auteur",
+        'city'             => 'la ville doit avoir au moins 2 caractères',
+        'zipcode'          => 'le code postal doit avoir 5 chiffres',
     ];
 
     $inputs = [
         'login'            => 'identifiant',
         'password'         => 'mot de passe',
         'password_confirm' => 'confirmation du mot de passe',
-        'type' => 'type de bien',
-        'surface' => 'surface',
-        'adresse' => 'adresse',
-        'ad' => 'annonce'
+        'type'             => 'type de bien',
+        'surface'          => 'surface',
+        'adresse'          => 'adresse',
+        'ad'               => 'annonce',
+        'city'             => 'ville',
+        'zipcode'          => 'code postal',
     ];
 
     return "<p>Le champ <strong>{$inputs[$name]}</strong> est invalide : {$messages[$name]}.</p>";
@@ -268,15 +303,17 @@ function sanitize_string($value)
     return trim(strip_tags($value));
 }
 
-function filter_type($input) {
+function filter_type($input)
+{
     // si la valeur est vide, la réponse est vide, sinon elle prend la valeur
     // FALSE par défaut
-    $reponse = (empty($input)) ? NULL : FALSE;
+    $reponse = (empty($input)) ? null : false;
     $options = ['appartement', 'maison', 'chateau', 'local', 'parking'];
     // si la valeur de l'input est dans le tableau, la réponse prend sa valeur
     if (in_array($input, $options)) {
         $reponse = $input;
     }
+
     return $reponse;
 }
 
@@ -294,15 +331,15 @@ $filter_login = [
 
 //tableau des filtres pour register.php
 $filter_register = [
-  'login' => [
+    'login' => [
         'filter'  => FILTER_CALLBACK,
         'options' => 'sanitize_string',
     ],
-  'password' => [
+    'password' => [
         'filter'  => FILTER_CALLBACK,
         'options' => 'sanitize_string',
     ],
-  'password_confirm' => [
+    'password_confirm' => [
         'filter'  => FILTER_CALLBACK,
         'options' => 'sanitize_string',
     ],
@@ -311,34 +348,31 @@ $filter_register = [
 //tableau des filtres pour les annonces
 $filter_adCreate = [
     'type' => [
-        'filter' => FILTER_CALLBACK,
-        'options' => 'filter_type'
+        'filter'  => FILTER_CALLBACK,
+        'options' => 'filter_type',
     ],
-    'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
-    'adresse' => [
-        'filter' => FILTER_CALLBACK,
-        'options' => 'sanitize_string',
-    ],
+    'surface' => FILTER_SANITIZE_NUMBER_INT | FILTER_VALIDATE_INT,
+    'adresse' => FILTER_SANITIZE_STRING,
+    'city'    => FILTER_SANITIZE_STRING,
+    'zipcode' => FILTER_SANITIZE_NUMBER_INT | FILTER_VALIDATE_INT,
   ];
 
 //tableau des filtres pour recherche.php
 $filter_search = [
     'adresse' => FILTER_SANITIZE_STRING,
-    'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
-    'type' => [
-        'filter' => FILTER_CALLBACK,
-        'options' => 'filter_type'
-    ]
+    'surface' => FILTER_SANITIZE_NUMBER_INT | FILTER_VALIDATE_INT,
+    'type'    => [
+        'filter'  => FILTER_CALLBACK,
+        'options' => 'filter_type',
+    ],
   ];
 
 //filtres pour la suppression d'annonces
-
 $filter_delete = [
-    'ad' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT
+    'ad' => FILTER_SANITIZE_NUMBER_INT | FILTER_VALIDATE_INT,
 ];
-
 
 //filtres pour l'edition d'annonce
 $filter_edit = [
-    'ad' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT
+    'ad' => FILTER_SANITIZE_NUMBER_INT | FILTER_VALIDATE_INT,
 ];

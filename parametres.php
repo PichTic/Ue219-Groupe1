@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="./css/custom.css">
 </head>
 <body>
-    <?php
-    // inclusion de la nav
-    include 'vues/nav.php';
-    ?>
+<?php
+// inclusion de la nav
+include 'vues/nav.php';
+?>
     <div id="main" class="container">
         <div id="title" class="text-center border border-secondary border-left-0 border-right-0 border-top-0">
             <h1>Modifier votre compte</h1>
@@ -25,14 +25,14 @@
         </div>
 
         <?php
-            flash();
-            flash('danger', 'error_profile');
+        flash();
+        flash('danger', 'error_profile');
         ?>
 
         <form class="form-signin" method="POST" action="">
 
             <label for="login" class="sr-only">Identifiant</label>
-            <input name="login" type="text" id="login" class="form-control" placeholder="Identifiant" autofocus value="<?php echo $_SESSION['client']['login'];?>">
+            <input name="login" type="text" id="login" class="form-control" placeholder="Identifiant" autofocus value="<?php echo $_SESSION['client']['login']; ?>">
 
             <label for="password" class="sr-only">Mot de passe</label>
             <input name="password" type="password" id="password" class="form-control" placeholder="Nouveau Mot de passe">
@@ -43,7 +43,7 @@
             <button name="profile" class="btn btn-lg btn-primary btn-block" type="submit">Mettre à jour</button>
         </form>
     </div>
-    <script src="./js/jquery-3.2.1.min.js"></script>
-    <script src="./js/bootstrap.bundle.min.js"></script>
-  </body>
+<script src="./js/jquery-3.2.1.min.js"></script>
+<script src="./js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
