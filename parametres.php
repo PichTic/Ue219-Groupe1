@@ -1,11 +1,12 @@
 <?php
     session_start();
     require_once 'lib/includes.php';
+    auth_only();
 
     //tentative de connexion à la bdd
-    try{   
-         // Mettez un nom de base erroné pour voir apparaître le message d'erreur 
-        $bdd=new PDO('mysql:host=localhost;dbname=projetue219','root','');
+    try{
+         // Mettez un nom de base erroné pour voir apparaître le message d'erreur
+        $bdd=new PDO('mysql:host=localhost;dbname=projetue236','root','');
     }catch(Exception $e){
         die('Erreur : ' . $e->getMessage());
     }
@@ -15,7 +16,7 @@
     $donnees=$reponse->fetch();
     $reponse->CloseCursor();
     $mdpverif=$donnees['motdepasse'];
-    
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,11 +30,11 @@
          <?php
             // inclusion de la nav
             include 'vues/nav.php';
-         
+
                 //changement du pseudo dans la bdd
                 if (!empty($_POST['login'])) {
                     $login = $_POST['login'];
-                    $query=$bdd->prepare('UPDATE clients SET identifiant 
+                    $query=$bdd->prepare('UPDATE clients SET identifiant
                         =:identifiant WHERE id=\''.$donnees['id'].'\'');
                     $query->bindValue(':identifiant',$login,PDO::PARAM_STR);
                     $query->execute()or die (print_r($req->errorInfo()));
@@ -71,13 +72,13 @@
                     <input type="submit" class="btn btn-lg btn-primary" value="Valider">
                 </fieldset>
             </form>
-            <?php 
+            <?php
                 if (!empty($erreur)) {
                     echo $erreur;
                 }
             ?>
-        </div> 
+        </div>
         <script src="./js/jquery-3.2.1.min.js"></script>
-        <script src="./js/bootstrap.bundle.min.js"></script>       
+        <script src="./js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
