@@ -215,6 +215,15 @@ function check_password_confirm($name, $value, $option)
     return false;
 }
 
+
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
 function check_type($name, $value) {
   $value = trim($value);
 
@@ -226,11 +235,20 @@ function check_type($name, $value) {
   }
 }
 
+
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
 function check_surface($name, $value) {
   $value = trim($value);
   $valuelength = strlen((string)$value); //On récupère la longueur de la variable
 
-  if((! is_null($value)) && (false != $value) && ($valuelength >= 3) && (!preg_match('/[A-Z][a-z]/', $value))) {
+  if((! is_null($value)) && (false != $value) && ($valuelength >= 2) && (!preg_match('/[A-Z][a-z]/', $value))) {
     return true;
   }
   else {
@@ -238,6 +256,15 @@ function check_surface($name, $value) {
   }
 }
 
+
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
 function check_city($name, $value) {
   $value = trim($value);
 
@@ -249,6 +276,15 @@ function check_city($name, $value) {
   }
 }
 
+
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
 function check_zip($name, $value) {
   $value = trim($value);
   $valuelength = strlen((string)$value); //On récupère la longueur de la variable
@@ -287,8 +323,8 @@ function errorMsg($name)
         'password'         => 'le mot de passe doit avoir au moins 8 caractères',
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
         'type' => 'mauvaise sélection',
-        'surface' => 'La surface doit contenir au moins 3 chiffres',
-        'price' => 'le prix doit contenir au moins 3 chiffres',
+        'surface' => 'La surface doit contenir au moins 2 chiffres',
+        'price' => 'le prix doit contenir au moins 2 chiffres',
         'adress' => 'l\'adresse doit avoir au moins 3 caractères',
         'city' => 'la ville doit avoir au moins 3 caractères et ne peut pas comporter de chiffre',
         'zip' => 'le code postal doit contenir 5 chiffres',

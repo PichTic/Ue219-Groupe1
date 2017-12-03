@@ -20,7 +20,10 @@ if (filter_has_var(INPUT_POST, 'post_announcement')) {
     }
 
     //Fusion des différents éléments de l'adresse pour l'entrée dans la base
-    $surface = $tempData['surface'] = $tempData['surface'] . ", " . $tempData['zip'] . " " . $tempData['city'];
+    $tempData['surface'] .= ", ";
+    $tempData['surface'] .= $tempData['zip'];
+    $tempData['surface'] .= " ";
+    $tempData['surface'] .= $tempData['city'];
 
     // s'il n'y a pas des d'erreurs
     if (0 === count($hasErrors)) {

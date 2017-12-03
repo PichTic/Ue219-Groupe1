@@ -38,7 +38,7 @@ auth_only();
         <div class="col-auto">
       <label class="form-signin" for="type">Type de bien</label>
     <select class="custom-select" name="type">
-      <option value="0" selected>Sélectionnez le type de bien</option>
+      <option value="0" selected disabled style="display:none;">Sélectionnez le type de bien</option> //Cette option est cachée au scroll de l'utilisateur
             <option value="1">Appartement</option>
             <option value="2">Maison</option>
             <option value="4">Château</option>
