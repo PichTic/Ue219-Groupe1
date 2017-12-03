@@ -14,13 +14,13 @@
                 <li class="nav-item">
                     <a class="nav-link <?php  is_page_active('test'); ?>" href="./test.php">Test</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php  is_page_active('recherche'); ?>" href="./recherche.php">Recherche</a>
-                </li>
                     <?php
                     // si l'user est connecté
                     if (is_auth()) :
                     ?>
+                <li class="nav-item">
+                    <a class="nav-link <?php  is_page_active('recherche'); ?>" href="./recherche.php">Recherche</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link <?php  is_page_active('annonces-post'); ?>" href="./annonces-post.php">Créer une annonce</a>
                 </li>
