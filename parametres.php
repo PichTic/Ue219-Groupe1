@@ -6,7 +6,7 @@
     //tentative de connexion à la bdd
     try{
          // Mettez un nom de base erroné pour voir apparaître le message d'erreur
-        $bdd=new PDO('mysql:host=localhost;dbname=projetue236','root','');
+        $bdd=new PDO('mysql:host=localhost;dbname=projetue219','root','');
     }catch(Exception $e){
         die('Erreur : ' . $e->getMessage());
     }
