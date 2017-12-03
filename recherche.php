@@ -34,7 +34,7 @@ require_once 'lib/includes.php';
             <form method="GET" class="form-inline">
                 <div class="form-group">
                     <label for="adresse" class="sr-only">Adresse</label>
-                    <input name="adresse" type="text" id="adresse" class="form-control search" placeholder="Adresse">
+                    <input name="adress" type="text" id="adresse" class="form-control search" placeholder="Adresse">
                 </div>
 
                 <div class="form-group">
@@ -45,7 +45,7 @@ require_once 'lib/includes.php';
                 <div class="form-group">
                     <label for="type" class="sr-only">Type</label>
                     <select name="type" type="" id="type" class="form-control search">
-                        <option>Type de bien</option>
+                        <option selected disabled style="display:none;">Type de bien</option>
                         <option value="appartement">Appartement</option>
                         <option value="maison">Maison</option>
                         <option value="chateau">Château</option>
