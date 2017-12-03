@@ -27,7 +27,7 @@ if (filter_has_var(INPUT_POST, 'post_announcement')) {
 
     // s'il n'y a pas des d'erreurs
     if (0 === count($hasErrors)) {
-        $data = annoucement_search_full($db, $tempData['adress'], $tempData['type'], $surface);
+        $data = annoucement_search_full($db, $tempData['adress'], $tempData['type'], $tempData['surface']);
 
         $created = false;
 
