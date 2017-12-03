@@ -41,18 +41,6 @@ function check_field($name, $value, $option = '')
     $output = false;
 
     switch ($name) {
-        case 'nom':
-            $output = check_nom($name, $value);
-            break;
-        case 'prenom':
-            $output = check_prenom($name, $value);
-            break;
-        case 'objet':
-            $output = check_objet($name, $value);
-            break;
-        case 'email':
-            $output = check_email($name, $value);
-            break;
         case 'login':
             $output = check_login($name, $value);
             break;
@@ -71,93 +59,9 @@ function check_field($name, $value, $option = '')
         case 'adresse':
             $output = check_adresse($name, $value);
             break;
-        case 'price':
-            $output = check_surface($name, $value); //On a les mêmes exigences que pour la surface
-            break;
-        case 'adress':
-            $output = check_login($name, $value); //On va seulement demander de rentrer au minimum 3 caractères comme pour le champ login
-            break;
-        case 'city':
-            $output = check_city($name, $value);
-            break;
-        case 'zip':
-            $output = check_zip($name, $value);
-            break;
     }
 
     return $output;
-}
-
-/**
- * Vérifie le champ email.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_email($name, $value)
-{
-    if (! is_null($value) && false != $value && strlen($value) > 0) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Vérifie le champ nom.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_nom($name, $value)
-{
-    $value = trim($value);
-
-    if (! is_null($value) && false != $value && strlen($value) > 0) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Vérifie le champ prénom.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_prenom($name, $value)
-{
-    $value = trim($value);
-
-    if (! is_null($value) && false != $value && strlen($value) > 0) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Vérifie le champ objet.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_objet($name, $value)
-{
-    if (is_null($value) || false === $value) {
-        return false;
-    }
-
-    return true;
 }
 
 /**
@@ -266,29 +170,6 @@ function check_adresse($name, $value) {
 
 
 
-  function check_city($name, $value) {
-    $value = trim($value);
-
-    if((preg_match('/[0-9]/', $value)) && (is_null($value)) && (false == $value) && ($valuelength < 3)) { //On cherche si il y a au moins un chiffre dans la variable qui ne valiserait pas le nom de la ville
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
-
-  function check_zip($name, $value) {
-    $value = trim($value);
-    $valuelength = strlen((string)$value); //On récupère la longueur de la variable
-
-    if((preg_match('/[0-9]/', $value)) && (! is_null($value)) && (false != $value) && ($valuelength == 5)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
 
 /**
  * Feedbacks des erreurs
@@ -317,10 +198,6 @@ function errorMsg($name)
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
         'type' => "ce type n'est pas disponible",
         'surface' => 'La surface doit être supérieure à 9m<sup>2</sup>',
-        'price' => 'le prix doit contenir au moins 3 chiffres',
-        'adress' => 'l\'adresse doit avoir au moins 3 caractères',
-        'city' => 'la ville doit avoir au moins 3 caractères et ne peut pas comporter de chiffre',
-        'zip' => 'le code postal doit contenir 5 chiffres',
         'adresse' => "l'adresse doit contenir au moins 3 caractères"
     ];
 
@@ -330,10 +207,6 @@ function errorMsg($name)
         'password_confirm' => 'confirmation du mot de passe',
         'type' => 'type de bien',
         'surface' => 'surface',
-        'price' => 'prix',
-        'adress' => 'adresse',
-        'city' => 'ville',
-        'zip' => 'code postal',
         'adresse' => 'adresse'
     ];
 
@@ -381,6 +254,18 @@ function sanitize_string($value)
     return trim(strip_tags($value));
 }
 
+function filter_type($input) {
+    // si la valeur est vide, la réponse est vide, sinon elle prend la valeur
+    // FALSE par défaut
+    $reponse = (empty($input)) ? NULL : FALSE;
+    $options = ['appartement', 'maison', 'chateau', 'local', 'parking'];
+    // si la valeur de l'input est dans le tableau, la réponse prend sa valeur
+    if (in_array($input, $options)) {
+        $reponse = $input;
+    }
+    return $reponse;
+}
+
  //tableau des filtres pour vues/login.php
 $filter_login = [
     'login' => [
@@ -410,30 +295,15 @@ $filter_register = [
 ];
 
 //tableau des filtres pour les annonces
-$filter_annoucement = [
+$filter_adCreate = [
     'type' => [
         'filter' => FILTER_CALLBACK,
-        'options' => 'sanitize_string',
+        'options' => 'filter_type'
     ],
-    'surface' => [
-        'filter' => FILTER_CALLBACK,
-        'options' => 'sanitize_number_int',
-    ],
-    'price' => [
-        'filter' => FILTER_CALLBACK,
-        'options' => 'sanitize_number_int',
-    ],
-    'adress' => [
+    'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
+    'adresse' => [
         'filter' => FILTER_CALLBACK,
         'options' => 'sanitize_string',
-    ],
-    'city' => [
-        'filter' => FILTER_CALLBACK,
-        'options' => 'sanitize_string',
-    ],
-    'zip' => [
-        'filter' => FILTER_CALLBACK,
-        'options' => 'sanitize_number_int',
     ],
   ];
 
@@ -443,16 +313,6 @@ $filter_search = [
     'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
     'type' => [
         'filter' => FILTER_CALLBACK,
-        'options' => function ($input) {
-            // si la valeur est vide, la réponse est vide, sinon elle prend la valeur
-            // FALSE par défaut
-            $reponse = (empty($input)) ? NULL : FALSE;
-            $options = ['appartement', 'maison'];
-            // si la valeur de l'input est dans le tableau, la réponse prend sa valeur
-            if (in_array($input, $options)) {
-                $reponse = $input;
-            }
-            return $reponse;
-        }
+        'options' => 'filter_type'
     ]
   ];

@@ -48,10 +48,13 @@ require_once 'lib/includes.php';
                         <option>Type de bien</option>
                         <option value="appartement">Appartement</option>
                         <option value="maison">Maison</option>
+                        <option value="chateau">Château</option>
+                        <option value="local">Local Commercial</option>
+                        <option value="parking">Parking / Box</option>
                     </select>
                 </div>
 
-                <button type="submit" name="rechercher" class="btn btn-primary search">Ok</button>
+                <button type="submit" name="rechercher" class="btn btn-primary">Ok</button>
               </form>
               <?php
                 if (isset($data)){

@@ -1,8 +1,8 @@
 <?php
 
-if (filter_has_var(INPUT_POST, 'post_announcement')) {
+if (filter_has_var(INPUT_POST, 'create')) {
     // on filtre nos champs
-    $resultats = filter_input_array(INPUT_POST, $filter_annoucement);
+    $resultats = filter_input_array(INPUT_POST, $filter_adCreate);
     // pour chaque champs
     foreach ($resultats as $name => $value) {
         // on vérifie le champ
@@ -19,21 +19,15 @@ if (filter_has_var(INPUT_POST, 'post_announcement')) {
         }
     }
 
-    //Fusion des différents éléments de l'adresse pour l'entrée dans la base
-    $tempData['surface'] .= ", ";
-    $tempData['surface'] .= $tempData['zip'];
-    $tempData['surface'] .= " ";
-    $tempData['surface'] .= $tempData['city'];
 
     // s'il n'y a pas des d'erreurs
     if (0 === count($hasErrors)) {
-        $data = annoucement_search_full($db, $tempData['adress'], $tempData['type'], $tempData['surface']);
-
+        $data = adDuplicate($db, $tempData['adresse'], $tempData['type'], $tempData['surface']);
         $created = false;
 
-        // s'il n'y as pas de compte existant avec ce login
+        // s'il n'y as pas d'annonce en doublon
         if (0 === count($data)) {
-            $created = annoucement_create($db, $tempData['adress'], $tempData['type'], $tempData['surface']);
+            $created = adCreate($db, $tempData['adresse'], $tempData['type'], $tempData['surface']);
         } else {
             $hasErrors[] = 'duplicate';
             $tempData['duplicate'] = '<p>Cette annonce existe déjà</p>';
@@ -41,13 +35,12 @@ if (filter_has_var(INPUT_POST, 'post_announcement')) {
 
         // le compte a été créé
         if ($created) {
-            unset($tempData['adress'], $tempData['type'], $tempData['surface']);
             add_flash("Votre annonce a bien été créée");
             header('Location: index.php');
             exit;
         } else {
-            $hasErrors[] = 'annoncement';
-            $tempData['annoncement'] = "<p>Votre annonce n'a pas été créée</p>";
+            $hasErrors[] = 'adCreate';
+            $tempData['adCreate'] = "<p>Votre annonce n'a pas été créée</p>";
         }
     }
     if (count($hasErrors) > 0) {

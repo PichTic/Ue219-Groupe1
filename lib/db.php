@@ -144,34 +144,36 @@ function ads_list($db)
    return $data;
 }
 
-function annoucement_create($db, $adress, $type, $surface) {
+function adCreate($db, $adresse, $type, $surface) {
   $sql = 'INSERT INTO `logements` (`adresse`, `type`, `surface`) VALUES (:adresse, :type, :surface)';
-
+  $ad_id = false;
   $connect = connect($db);
   $query = $connect->prepare($sql);
   $created = $query->execute([
-      'adresse' => $adress,
+      'adresse' => $adresse,
       'type' => $type,
       'surface' => $surface,
   ]);
-
+  if ($created) {
+    $ad_id = $connect->lastInsertId();
+    }
   deconnect($connect);
+  return $ad_id;
 }
 
-function annoucement_search_full($db, $adress, $type, $surface) {
+function adDuplicate($db, $adresse, $type, $surface) {
   // La requête SQL : recherche d'une annonce précise
-  $sql = 'SELECT * FROM `logements` WHERE `adresse` = :adress AND `type` = :type AND `surface` = :surface';
+  $sql = 'SELECT * FROM `logements` WHERE `adresse` = :adresse AND `type` = :type AND `surface` = :surface';
   // connexion à la bd
   $connect = connect($db);
   // préparation de la requête
   $query = $connect->prepare($sql);
-  // substitution de l'entrées de $login  à la place de ':login'
-  // et exécute la requête
-  $query->execute([
-      'adress' => $adress,
-      'type' => $type,
-      'surface' => $surface
-  ]);
+
+  $query->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+  $query->bindParam(':type', $type, PDO::PARAM_STR);
+  $query->bindParam(':surface', $surface, PDO::PARAM_INT);
+
+  $query->execute();
   // récupération des données
   $data = $query->fetchAll();
   // deconnexion
