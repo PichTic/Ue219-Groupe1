@@ -143,3 +143,76 @@ function ads_list($db)
    deconnect($connect);
    return $data;
 }
+
+function adCreate($db, $adresse, $type, $surface) {
+  $sql = 'INSERT INTO `logements` (`adresse`, `type`, `surface`) VALUES (:adresse, :type, :surface)';
+  $ad_id = false;
+  $connect = connect($db);
+  $query = $connect->prepare($sql);
+  $created = $query->execute([
+      'adresse' => $adresse,
+      'type' => $type,
+      'surface' => $surface,
+  ]);
+  if ($created) {
+    $ad_id = $connect->lastInsertId();
+    }
+  deconnect($connect);
+  return $ad_id;
+}
+
+function adDuplicate($db, $adresse, $type, $surface) {
+  // La requête SQL : recherche d'une annonce précise
+  $sql = 'SELECT * FROM `logements` WHERE `adresse` = :adresse AND `type` = :type AND `surface` = :surface';
+  // connexion à la bd
+  $connect = connect($db);
+  // préparation de la requête
+  $query = $connect->prepare($sql);
+
+  $query->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+  $query->bindParam(':type', $type, PDO::PARAM_STR);
+  $query->bindParam(':surface', $surface, PDO::PARAM_INT);
+
+  $query->execute();
+  // récupération des données
+  $data = $query->fetchAll();
+  // deconnexion
+  deconnect($connect);
+
+  return $data;
+}
+
+/**
+ *
+ * @see http://php.net/manual/en/pdostatement.bindparam.php#99698
+ *
+ * @param [type] $db
+ * @param [type] $adresse
+ * @param [type] $type
+ * @param [type] $surface
+ * @return void
+ */
+function ads_search($db, $adresse, $type, $surface) {
+
+    $sql = "SELECT * FROM `logements` WHERE `adresse` LIKE :adresse AND `type` = :type AND `surface` = :surface";
+
+    $adresse = empty($adresse) ? '*' : "%{$adresse}%";
+    $type = empty($type) ? '*' : $type;
+    $surface = empty($surface) ? '*' : (int) $surface;
+
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+
+    $query->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+    $query->bindParam(':type', $type, PDO::PARAM_STR);
+    $query->bindParam(':surface', $surface, PDO::PARAM_INT);
+
+    $query->execute();
+
+    // $query->debugDumpParams();
+
+    $data = $query->fetchAll();
+    deconnect($connect);
+
+    return $data;
+}

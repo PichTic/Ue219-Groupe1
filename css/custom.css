@@ -56,3 +56,12 @@ body {
 .form-signin button {
   margin-top: 10px;
 }
+
+/**__________________________________________________________________________
+ * Formulaires de connexion et création de compte
+ *
+ */
+
+ .search {
+   margin : 10px;
+ }

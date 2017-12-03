@@ -41,18 +41,6 @@ function check_field($name, $value, $option = '')
     $output = false;
 
     switch ($name) {
-        case 'nom':
-            $output = check_nom($name, $value);
-            break;
-        case 'prenom':
-            $output = check_prenom($name, $value);
-            break;
-        case 'objet':
-            $output = check_objet($name, $value);
-            break;
-        case 'email':
-            $output = check_email($name, $value);
-            break;
         case 'login':
             $output = check_login($name, $value);
             break;
@@ -62,81 +50,18 @@ function check_field($name, $value, $option = '')
         case 'password_confirm':
             $output = check_password_confirm($name, $value, $option);
             break;
+        case 'type':
+            $output = check_type($name, $value);
+            break;
+        case 'surface':
+            $output = check_surface($name, $value);
+            break;
+        case 'adresse':
+            $output = check_adresse($name, $value);
+            break;
     }
 
     return $output;
-}
-
-/**
- * Vérifie le champ email.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_email($name, $value)
-{
-    if (! is_null($value) && false != $value && strlen($value) > 0) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Vérifie le champ nom.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_nom($name, $value)
-{
-    $value = trim($value);
-
-    if (! is_null($value) && false != $value && strlen($value) > 0) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Vérifie le champ prénom.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_prenom($name, $value)
-{
-    $value = trim($value);
-
-    if (! is_null($value) && false != $value && strlen($value) > 0) {
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Vérifie le champ objet.
- *
- * @param string $name
- * @param string $value
- *
- * @return bool
- */
-function check_objet($name, $value)
-{
-    if (is_null($value) || false === $value) {
-        return false;
-    }
-
-    return true;
 }
 
 /**
@@ -151,7 +76,7 @@ function check_login($name, $value)
 {
     $value = trim($value);
 
-    if (! is_null($value) && false != $value && strlen($value) > 3) {
+    if (! is_null($value) && false != $value && strlen($value) >= 3) {
         return true;
     }
 
@@ -197,6 +122,55 @@ function check_password_confirm($name, $value, $option)
     return false;
 }
 
+
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
+function check_type($name, $value) {
+    $value = trim($value);
+
+    if ((! is_null($value)) && (false != $value)) {
+        return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
+function check_surface($name, $value) {
+    $value = intval(trim($value));
+
+    if((! is_null($value)) && (false != $value)) {
+      return true;
+    }
+      return false;
+}
+
+function check_adresse($name, $value) {
+    $value = trim($value);
+
+    if((! is_null($value)) && (false != $value) && strlen($value) >= 3)  {
+      return true;
+    }
+      return false;
+}
+
+
+
+
 /**
  * Feedbacks des erreurs
  * ---------------------
@@ -222,12 +196,18 @@ function errorMsg($name)
         'login'            => "l'identifiant doit avoir au moins 3 caractères",
         'password'         => 'le mot de passe doit avoir au moins 8 caractères',
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
+        'type' => "ce type n'est pas disponible",
+        'surface' => 'La surface doit être supérieure à 9m<sup>2</sup>',
+        'adresse' => "l'adresse doit contenir au moins 3 caractères"
     ];
 
     $inputs = [
         'login'            => 'identifiant',
         'password'         => 'mot de passe',
         'password_confirm' => 'confirmation du mot de passe',
+        'type' => 'type de bien',
+        'surface' => 'surface',
+        'adresse' => 'adresse'
     ];
 
     return "<p>Le champ <strong>{$inputs[$name]}</strong> est invalide : {$messages[$name]}.</p>";
@@ -274,6 +254,18 @@ function sanitize_string($value)
     return trim(strip_tags($value));
 }
 
+function filter_type($input) {
+    // si la valeur est vide, la réponse est vide, sinon elle prend la valeur
+    // FALSE par défaut
+    $reponse = (empty($input)) ? NULL : FALSE;
+    $options = ['appartement', 'maison', 'chateau', 'local', 'parking'];
+    // si la valeur de l'input est dans le tableau, la réponse prend sa valeur
+    if (in_array($input, $options)) {
+        $reponse = $input;
+    }
+    return $reponse;
+}
+
  //tableau des filtres pour vues/login.php
 $filter_login = [
     'login' => [
@@ -301,3 +293,26 @@ $filter_register = [
         'options' => 'sanitize_string',
     ],
 ];
+
+//tableau des filtres pour les annonces
+$filter_adCreate = [
+    'type' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'filter_type'
+    ],
+    'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
+    'adresse' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+  ];
+
+//tableau des filtres pour recherche.php
+$filter_search = [
+    'adresse' => FILTER_SANITIZE_STRING,
+    'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
+    'type' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'filter_type'
+    ]
+  ];

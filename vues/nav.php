@@ -14,9 +14,19 @@
                 <li class="nav-item">
                     <a class="nav-link <?php  is_page_active('test'); ?>" href="./test.php">Test</a>
                 </li>
+                    <?php
+                    // si l'user est connecté
+                    if (is_auth()) :
+                    ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link <?php  is_page_active('recherche'); ?>" href="./recherche.php">Recherche</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php  is_page_active('annonces-post'); ?>" href="./annonces-post.php">Créer une annonce</a>
+                </li>
+                <?php
+                endif;
+                ?>
             </ul>
             <!--  items de navigation spécifiques (sur la droite) -->
             <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
