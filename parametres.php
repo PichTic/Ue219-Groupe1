@@ -63,7 +63,7 @@
                     <label>Votre nouveau Login :</label>
                     <input type="text" name="login" placeholder="Nouveau Login"><br>
                     <legend>Changer de Mot de passe </legend>
-                    <label>Taper votre ancien mot de passe puis le nouveau pour changer de mot de passe.</label><br>
+                    <label>Tapez votre ancien mot de passe puis le nouveau pour changer de mot de passe.</label><br>
                     <label>Votre ancien Mot de passe :</label>
                     <input type="password" name="oldmdp" placeholder="Ancien Mdp"><br>
                     <label>Votre nouveau Mot de passe :</label>
