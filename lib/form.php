@@ -218,6 +218,15 @@ function check_password_confirm($name, $value, $option)
     return false;
 }
 
+
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
 function check_type($name, $value) {
     $value = trim($value);
 
@@ -229,6 +238,14 @@ function check_type($name, $value) {
     }
   }
 
+/**
+ * Vérifie le champ password.
+ *
+ * @param string $name
+ * @param string $value
+ *
+ * @return bool
+ */
 function check_surface($name, $value) {
     $value = intval(trim($value));
 

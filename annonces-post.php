@@ -28,12 +28,17 @@ auth_only();
     </div>
       </div>
 
-      <form class="form-signin">
+      <?php
+          // affiche le message de flash stocké dans $_SESSION['error_annonce'] s'il y en a
+          flash('danger', 'error_annonce');
+      ?>
+
+      <form class="form-signin" method="POST" action="">
         <h2 class="form-signin-heading">Publiez votre annonce</h2>
         <div class="col-auto">
       <label class="form-signin" for="type">Type de bien</label>
     <select class="custom-select" name="type">
-      <option selected>Sélectionnez le type de bien</option>
+      <option value="0" selected disabled style="display:none;">Sélectionnez le type de bien</option> //Cette option est cachée au scroll de l'utilisateur
             <option value="1">Appartement</option>
             <option value="2">Maison</option>
             <option value="4">Château</option>
