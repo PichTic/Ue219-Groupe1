@@ -2,7 +2,7 @@
 session_start();
 require_once 'lib/includes.php';
 
-//Si un utilisateur déjà logué veux accéder à cette page
+//Si un utilisateur non logué veux accéder à cette page
 //il sera redirigé vers index.php
 auth_only();
 ?>
