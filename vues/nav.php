@@ -38,6 +38,9 @@
                     <a class="nav-link <?php  is_page_active('parametres'); ?>" href="./parametres.php">Mon profil</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?php  is_page_active('mesAnnonces'); ?>" href="./mesAnnonces.php">Mes annonces</a>
+                </li>
+                <li class="nav-item">
                     <a class="btn btn-outline-danger" href="./logout.php">Déconnexion</a>
                 </li>
                 <?php

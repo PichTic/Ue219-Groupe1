@@ -53,7 +53,6 @@ require_once 'lib/includes.php';
                         <option value="parking">Parking / Box</option>
                     </select>
                 </div>
-
                 <button type="submit" name="rechercher" class="btn btn-primary">Ok</button>
               </form>
               <?php
@@ -79,8 +78,7 @@ require_once 'lib/includes.php';
               <?php
                 }
               ?>
-
-</div>
+            </div>
                 <div class="col-md-4">
 
                     <h2 class="text-center h4">Agence Uchi</h2>

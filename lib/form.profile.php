@@ -1,6 +1,6 @@
 <?php
 
-if (filter_has_var(INPUT_POST, 'register')) {
+if (filter_has_var(INPUT_POST, 'profile')) {
     // on filtre nos champs
     $resultats = filter_input_array(INPUT_POST, $filter_register);
     // pour chaque champs
@@ -22,35 +22,34 @@ if (filter_has_var(INPUT_POST, 'register')) {
     }
     // s'il n'y a pas des d'erreurs
     if (0 === count($hasErrors)) {
-        $data = user_by_login($db, $tempData['login']);
+        $data = user_duplicate_login($db, $tempData['login'], $_SESSION['client']['id']);
 
-        $created = false;
+        $updated = false;
 
         // s'il n'y as pas de compte existant avec ce login
         if (0 === count($data)) {
-            $created = user_create($db, $tempData['login'], $tempData['password']);
-            $tempData['id'] = $created;
+            $updated = user_update($db, $tempData['login'], $tempData['password'], $_SESSION['client']['id']);
         } else {
             $hasErrors[] = 'duplicate';
-            $tempData['duplicate'] = '<p>Ce compte existe déjà</p>';
+            $tempData['duplicate'] = "<p>Cet identifiant n'est plus disponible</p>";
         }
 
         // le compte a été créé
-        if ($created) {
+        if ($updated) {
             unset($tempData['password'], $tempData['password_confirm']);
-            $_SESSION['client'] = $tempData;
-            add_flash("Bonjour {$tempData['login']} ! Votre compte est bien créé");
-            header('Location: index.php');
+            $_SESSION['client']['login'] = $tempData['login'];
+            add_flash("{$tempData['login']} ! Votre compte est bien mis à jour");
+            header('Location: parametres.php');
             exit;
         } else {
             $hasErrors[] = 'account';
-            $tempData['account'] = "<p>Votre compte n'a pas été crée</p>";
+            $tempData['account'] = "<p>Votre compte n'a pas été mis à jour</p>";
         }
     }
     if (count($hasErrors) > 0) {
         // sinon, on donne le feedback des champs invalides
-        add_flash(get_errors($hasErrors, $tempData), 'error_register');
+        add_flash(get_errors($hasErrors, $tempData), 'error_profile');
         // et on détruit la session
-        logout('register.php');
+        logout('parametres.php');
     }
 }

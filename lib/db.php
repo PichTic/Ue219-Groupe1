@@ -144,8 +144,8 @@ function ads_list($db)
    return $data;
 }
 
-function adCreate($db, $adresse, $type, $surface) {
-  $sql = 'INSERT INTO `logements` (`adresse`, `type`, `surface`) VALUES (:adresse, :type, :surface)';
+function adCreate($db, $adresse, $type, $surface, $id) {
+  $sql = 'INSERT INTO `logements` (`adresse`, `type`, `surface`, `client_id`) VALUES (:adresse, :type, :surface, :client_id)';
   $ad_id = false;
   $connect = connect($db);
   $query = $connect->prepare($sql);
@@ -153,6 +153,7 @@ function adCreate($db, $adresse, $type, $surface) {
       'adresse' => $adresse,
       'type' => $type,
       'surface' => $surface,
+      'client_id' => $id
   ]);
   if ($created) {
     $ad_id = $connect->lastInsertId();
@@ -216,3 +217,98 @@ function ads_search($db, $adresse, $type, $surface) {
 
     return $data;
 }
+
+function ads_by_user($db, $client_id)
+{
+   $sql = "SELECT * FROM `logements` WHERE `client_id` = :client_id";
+   $connect = connect($db);
+   $query = $connect->prepare($sql);
+   $query->execute([
+       'client_id' => $client_id,
+   ]);
+   $data = $query->fetchAll();
+   deconnect($connect);
+   return $data;
+}
+
+
+function ad_exists($db, $client_id, $ad_id)
+{
+    $sql = "SELECT * FROM `logements` WHERE `client_id` = :client_id AND `id` = :ad_id";
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+    $query->execute([
+        'client_id' => $client_id,
+        'ad_id' => $ad_id,
+    ]);
+    $data = $query->fetchAll();
+    deconnect($connect);
+
+    return $data;
+}
+
+
+function ad_delete($db, $id) {
+    $sql = 'DELETE FROM `logements` WHERE `id` = :id';
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+    $deleted = $query->execute([
+        'id' => $id
+    ]);
+
+    deconnect($connect);
+    return $deleted;
+  }
+
+
+  function adUpdate($db, $adresse, $type, $surface, $id) {
+    $sql = "UPDATE `logements` SET `adresse` = :adresse, `type` = :type,`surface` = :surface WHERE `id` = :id";
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+    $updated = $query->execute([
+        'adresse' => $adresse,
+        'type' => $type,
+        'surface' => $surface,
+        'id' => $id
+    ]);
+
+    deconnect($connect);
+    return $updated;
+  }
+
+  function user_duplicate_login($db, $login, $id)
+  {
+      // La requête SQL : chercher un user avec un identifant X ?
+      $sql = 'SELECT * FROM `clients` WHERE `identifiant` = :login AND `id` <> :id ';
+      // connexion à la bd
+      $connect = connect($db);
+      // préparation de la requête
+      $query = $connect->prepare($sql);
+      // substitution de l'entrées de $login  à la place de ':login'
+      // et exécute la requête
+      $query->execute([
+          'login' => $login,
+          'id' => $id
+      ]);
+      // récupération des données
+      $data = $query->fetchAll();
+      // deconnexion
+      deconnect($connect);
+
+      return $data;
+  }
+
+
+  function user_update($db, $login, $password, $id) {
+    $sql = "UPDATE `clients` SET `identifiant` = :login, `motdepasse` = :password WHERE `id` = :id";
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+    $updated = $query->execute([
+        'login' => $login,
+        'password' => $password,
+        'id' => $id
+    ]);
+
+    deconnect($connect);
+    return $updated;
+  }

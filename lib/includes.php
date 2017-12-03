@@ -18,3 +18,8 @@ require_once 'form.login.php';
 require_once 'form.register.php';
 require_once 'form.adCreate.php';
 require_once 'form.search.php';
+require_once 'form.delete.php';
+require_once 'form.get_edit.php';
+require_once 'form.post_edit.php';
+require_once 'form.profile.php';
+

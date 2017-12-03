@@ -59,6 +59,9 @@ function check_field($name, $value, $option = '')
         case 'adresse':
             $output = check_adresse($name, $value);
             break;
+        case 'ad':
+            $output = check_adId($name, $value);
+            break;
     }
 
     return $output;
@@ -168,6 +171,15 @@ function check_adresse($name, $value) {
       return false;
 }
 
+function check_adId($name, $value) {
+    $value = intval(trim($value));
+
+    if((! is_null($value)) && (false != $value)) {
+      return true;
+    }
+      return false;
+}
+
 
 
 
@@ -198,7 +210,8 @@ function errorMsg($name)
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
         'type' => "ce type n'est pas disponible",
         'surface' => 'La surface doit être supérieure à 9m<sup>2</sup>',
-        'adresse' => "l'adresse doit contenir au moins 3 caractères"
+        'adresse' => "l'adresse doit contenir au moins 3 caractères",
+        'ad'=> "cette annonce n'existe pas ou vous n'en êtes pas l'auteur"
     ];
 
     $inputs = [
@@ -207,7 +220,8 @@ function errorMsg($name)
         'password_confirm' => 'confirmation du mot de passe',
         'type' => 'type de bien',
         'surface' => 'surface',
-        'adresse' => 'adresse'
+        'adresse' => 'adresse',
+        'ad' => 'annonce'
     ];
 
     return "<p>Le champ <strong>{$inputs[$name]}</strong> est invalide : {$messages[$name]}.</p>";
@@ -316,3 +330,15 @@ $filter_search = [
         'options' => 'filter_type'
     ]
   ];
+
+//filtres pour la suppression d'annonces
+
+$filter_delete = [
+    'ad' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT
+];
+
+
+//filtres pour l'edition d'annonce
+$filter_edit = [
+    'ad' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT
+];
