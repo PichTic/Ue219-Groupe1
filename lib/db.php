@@ -143,3 +143,39 @@ function ads_list($db)
    deconnect($connect);
    return $data;
 }
+
+function annoucement_create($db, $adress, $type, $surface) {
+  $sql = 'INSERT INTO `logements` (`adresse`, `type`, `surface`) VALUES (:adresse, :type, :surface)';
+
+  $connect = connect($db);
+  $query = $connect->prepare($sql);
+  $created = $query->execute([
+      'adresse' => $adresse,
+      'type' => $type,
+      'surface' => $surface,
+  ]);
+
+  deconnect($connect);
+}
+
+function annoucement_search_full($db, $adress, $type, $surface) {
+  // La requête SQL : recherche d'une annonce précise
+  $sql = 'SELECT * FROM `logements` WHERE `adresse` = :adress AND `type` = :type AND `surface` = :surface';
+  // connexion à la bd
+  $connect = connect($db);
+  // préparation de la requête
+  $query = $connect->prepare($sql);
+  // substitution de l'entrées de $login  à la place de ':login'
+  // et exécute la requête
+  $query->execute([
+      'adresse' => $adress,
+      'type' => $type,
+      'surface' => $surface,
+  ]);
+  // récupération des données
+  $data = $query->fetchAll();
+  // deconnexion
+  deconnect($connect);
+
+  return $data;
+}

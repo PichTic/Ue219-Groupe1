@@ -62,6 +62,24 @@ function check_field($name, $value, $option = '')
         case 'password_confirm':
             $output = check_password_confirm($name, $value, $option);
             break;
+        case 'type':
+            $output = check_type($name, $value);
+            break;
+        case 'surface':
+            $output = check_surface($name, $value);
+            break;
+        case 'price':
+            $output = check_surface($name, $value); //On a les mêmes exigences que pour la surface
+            break;
+        case 'adress':
+            $output = check_login($name, $value); //On va seulement demander de rentrer au minimum 3 caractères comme pour le champ login
+            break;
+        case 'city':
+            $output = check_city($name, $value);
+            break;
+        case 'zip':
+            $output = check_zip($name, $value);
+            break;
     }
 
     return $output;
@@ -151,7 +169,7 @@ function check_login($name, $value)
 {
     $value = trim($value);
 
-    if (! is_null($value) && false != $value && strlen($value) > 3) {
+    if (! is_null($value) && false != $value && strlen($value) >= 3) {
         return true;
     }
 
@@ -197,6 +215,52 @@ function check_password_confirm($name, $value, $option)
     return false;
 }
 
+function check_type($name, $value) {
+  $value = trim($value);
+
+  if ((! is_null($value)) && (false != $value)) {
+      return true;
+  }
+  else {
+    return false;
+  }
+}
+
+function check_surface($name, $value) {
+  $value = trim($value);
+  $valuelength = strlen((string)$value); //On récupère la longueur de la variable
+
+  if((! is_null($value)) && (false != $value) && ($valuelength >= 3) && (preg_match('/[0-9]/', $value))) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+function check_city($name, $value) {
+  $value = trim($value);
+
+  if((preg_match('/[0-9]/', $value)) && (is_null($value)) && (false == $value) && ($valuelength < 3)) { //On cherche si il y a au moins un chiffre dans la variable qui ne valiserait pas le nom de la ville
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
+function check_zip($name, $value) {
+  $value = trim($value);
+  $valuelength = strlen((string)$value); //On récupère la longueur de la variable
+
+  if((preg_match('/[0-9]/', $value)) && (! is_null($value)) && (false != $value) && ($valuelength == 5)) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 /**
  * Feedbacks des erreurs
  * ---------------------
@@ -222,12 +286,24 @@ function errorMsg($name)
         'login'            => "l'identifiant doit avoir au moins 3 caractères",
         'password'         => 'le mot de passe doit avoir au moins 8 caractères',
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
+        'type' => 'mauvaise sélection',
+        'surface' => 'La surface doit contenir au moins 3 chiffres',
+        'price' => 'le prix doit contenir au moins 3 chiffres',
+        'adress' => 'l\'adresse doit avoir au moins 3 caractères',
+        'city' => 'la ville doit avoir au moins 3 caractères et ne peut pas comporter de chiffre',
+        'zip' => 'le code postal doit contenir 5 chiffres',
     ];
 
     $inputs = [
         'login'            => 'identifiant',
         'password'         => 'mot de passe',
         'password_confirm' => 'confirmation du mot de passe',
+        'type' => 'type de bien',
+        'surface' => 'surface',
+        'price' => 'prix',
+        'adress' => 'adresse',
+        'city' => 'ville',
+        'zip' => 'code postal',
     ];
 
     return "<p>Le champ <strong>{$inputs[$name]}</strong> est invalide : {$messages[$name]}.</p>";
@@ -300,4 +376,32 @@ $filter_register = [
         'filter'  => FILTER_CALLBACK,
         'options' => 'sanitize_string',
     ],
+];
+
+//tableau des filtres pour les annonces
+$filter_annoucement = [
+  'type' => [
+      'filter' => FILTER_CALLBACK,
+      'options' => 'sanitize_string',
+  ],
+  'surface' => [
+      'filter' => FILTER_CALLBACK,
+      'options' => 'sanitize_number_int',
+  ],
+  'price' => [
+      'filter' => FILTER_CALLBACK,
+      'options' => 'sanitize_number_int',
+  ],
+  'adress' => [
+      'filter' => FILTER_CALLBACK,
+      'options' => 'sanitize_string',
+  ],
+  'city' => [
+      'filter' => FILTER_CALLBACK,
+      'options' => 'sanitize_string',
+  ],
+  'zip' => [
+      'filter' => FILTER_CALLBACK,
+      'options' => 'sanitize_number_int',
+  ],
 ];
