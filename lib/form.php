@@ -216,50 +216,51 @@ function check_password_confirm($name, $value, $option)
 }
 
 function check_type($name, $value) {
-  $value = trim($value);
+    $value = trim($value);
 
-  if ((! is_null($value)) && (false != $value)) {
+    if ((! is_null($value)) && (false != $value)) {
+        return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  function check_surface($name, $value) {
+    $value = trim($value);
+    $valuelength = strlen((string)$value); //On récupère la longueur de la variable
+
+    if((! is_null($value)) && (false != $value) && ($valuelength >= 3) && (preg_match('/[0-9]/', $value))) {
       return true;
+    }
+    else {
+      return false;
+    }
   }
-  else {
-    return false;
-  }
-}
 
-function check_surface($name, $value) {
-  $value = trim($value);
-  $valuelength = strlen((string)$value); //On récupère la longueur de la variable
+  function check_city($name, $value) {
+    $value = trim($value);
 
-  if((! is_null($value)) && (false != $value) && ($valuelength >= 3) && (preg_match('/[0-9]/', $value))) {
-    return true;
+    if((preg_match('/[0-9]/', $value)) && (is_null($value)) && (false == $value) && ($valuelength < 3)) { //On cherche si il y a au moins un chiffre dans la variable qui ne valiserait pas le nom de la ville
+      return false;
+    }
+    else {
+      return true;
+    }
   }
-  else {
-    return false;
-  }
-}
 
-function check_city($name, $value) {
-  $value = trim($value);
+  function check_zip($name, $value) {
+    $value = trim($value);
+    $valuelength = strlen((string)$value); //On récupère la longueur de la variable
 
-  if((preg_match('/[0-9]/', $value)) && (is_null($value)) && (false == $value) && ($valuelength < 3)) { //On cherche si il y a au moins un chiffre dans la variable qui ne valiserait pas le nom de la ville
-    return false;
+    if((preg_match('/[0-9]/', $value)) && (! is_null($value)) && (false != $value) && ($valuelength == 5)) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
-  else {
-    return true;
-  }
-}
 
-function check_zip($name, $value) {
-  $value = trim($value);
-  $valuelength = strlen((string)$value); //On récupère la longueur de la variable
-
-  if((preg_match('/[0-9]/', $value)) && (! is_null($value)) && (false != $value) && ($valuelength == 5)) {
-    return true;
-  }
-  else {
-    return false;
-  }
-}
 
 /**
  * Feedbacks des erreurs
@@ -380,28 +381,54 @@ $filter_register = [
 
 //tableau des filtres pour les annonces
 $filter_annoucement = [
-  'type' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_string',
-  ],
-  'surface' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_number_int',
-  ],
-  'price' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_number_int',
-  ],
-  'adress' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_string',
-  ],
-  'city' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_string',
-  ],
-  'zip' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_number_int',
-  ],
-];
+    'type' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+    'surface' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_number_int',
+    ],
+    'price' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_number_int',
+    ],
+    'adress' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+    'city' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+    'zip' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_number_int',
+    ],
+  ];
+
+//tableau des filtres pour recherche.php
+$filter_search = [
+    'adresse' => [
+          'filter'  => FILTER_CALLBACK,
+          'options' => 'sanitize_string',
+      ],
+    'surface' => [
+          'filter'  => FILTER_CALLBACK,
+          'options' => 'sanitize_string',
+      ],
+      'type' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => function ($input) {
+            // si la valeur est vide, la réponse est vide, sinon elle prend la valeur
+            // FALSE par défaut
+            $reponse = (empty($input)) ? NULL : FALSE;
+            $options = ['appartement', 'maison'];
+            // si la valeur de l'input est dans le tableau, la réponse prend sa valeur
+            if (in_array($input, $options)) {
+                $reponse = $input;
+            }
+            return $reponse;
+        }
+    ]
+  ];
