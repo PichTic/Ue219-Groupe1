@@ -65,9 +65,9 @@
                     <legend>Changer de Mot de passe </legend>
                     <label>Taper votre ancien mot de passe puis le nouveau pour changer de mot de passe.</label><br>
                     <label>Votre ancien Mot de passe :</label>
-                    <input type="text" name="oldmdp" placeholder="Ancien Mdp"><br>
+                    <input type="password" name="oldmdp" placeholder="Ancien Mdp"><br>
                     <label>Votre nouveau Mot de passe :</label>
-                    <input type="text" name="mdp" placeholder="Nouveau Mdp"><br>
+                    <input type="password" name="mdp" placeholder="Nouveau Mdp"><br>
                     <input type="submit" class="btn btn-lg btn-primary" value="Valider">
                 </fieldset>
             </form>
