@@ -29,7 +29,7 @@ if (filter_has_var(INPUT_GET, 'rechercher')) {
      */
     if (0 === count($hasErrors)) {
 
-        $data = ads_search($db, $tempData['adresse'], $tempData['type'], $tempData['surface']);
+        $data = ads_search($db, $tempData['adress'], $tempData['type'], $tempData['surface']);
 
         if (count($data) === 0) {
 

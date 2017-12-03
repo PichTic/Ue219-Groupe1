@@ -340,7 +340,7 @@ $filter_adCreate = [
 
 //tableau des filtres pour recherche.php
 $filter_search = [
-    'adresse' => FILTER_SANITIZE_STRING,
+    'adress' => FILTER_SANITIZE_STRING,
     'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
     'type' => [
         'filter' => FILTER_CALLBACK,
