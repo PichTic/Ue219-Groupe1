@@ -17,6 +17,10 @@ auth_only();
   <link rel="stylesheet" href="./css/custom.css">
 </head>
   <body>
+      <?php
+      // inclusion de la nav
+      include 'vues/nav.php';
+      ?>
   <div class="container">
     <div class="text-center">
       <h1>Uchi</h1>
