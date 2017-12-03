@@ -179,3 +179,38 @@ function annoucement_search_full($db, $adress, $type, $surface) {
 
   return $data;
 }
+
+/**
+ *
+ * @see http://php.net/manual/en/pdostatement.bindparam.php#99698
+ *
+ * @param [type] $db
+ * @param [type] $adresse
+ * @param [type] $type
+ * @param [type] $surface
+ * @return void
+ */
+function ads_search($db, $adresse, $type, $surface) {
+
+    $sql = "SELECT * FROM `logements` WHERE `adresse` LIKE :adresse AND `type` = :type AND `surface` = :surface";
+
+    $adresse = empty($adresse) ? '*' : "%{$adresse}%";
+    $type = empty($type) ? '*' : $type;
+    $surface = empty($surface) ? '*' : (int) $surface;
+
+    $connect = connect($db);
+    $query = $connect->prepare($sql);
+
+    $query->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+    $query->bindParam(':type', $type, PDO::PARAM_STR);
+    $query->bindParam(':surface', $surface, PDO::PARAM_INT);
+
+    $query->execute();
+
+    // $query->debugDumpParams();
+
+    $data = $query->fetchAll();
+    deconnect($connect);
+
+    return $data;
+}

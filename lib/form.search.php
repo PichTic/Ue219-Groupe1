@@ -2,7 +2,9 @@
 
 if (filter_has_var(INPUT_GET, 'rechercher')) {
     // on filtre nos champs
+
     $resultats = filter_input_array(INPUT_GET, $filter_search);
+
     // pour chaque champs
     foreach ($resultats as $name => $value) {
         // on vérifie le champ
@@ -26,28 +28,29 @@ if (filter_has_var(INPUT_GET, 'rechercher')) {
      * correspond bien à une entrée dans la base de données
      */
     if (0 === count($hasErrors)) {
-        $data = user_exists($db, $tempData['login'], $tempData['password']);
 
-        //si le tableau $data est vide (pas de couple 'login' & 'password')
-        //le compte n'existe pas j'en informe l'utilisateur
-        if (0 === count($data)) {
-            $hasErrors[] = 'account';
-            $tempData['account'] = "<p>Ce compte n'existe pas</p>";
+        $data = ads_search($db, $tempData['adresse'], $tempData['type'], $tempData['surface']);
+
+        if (count($data) === 0) {
+
+            $hasErrors[] = 'search';
+            $tempData['search'] = "<p>Aucun bien correspond à votre recherche</p>";
+
         } else {
-            unset($tempData['password']);
-            $tempData['id'] = $data[0]['id'];
+
+
+
         }
     }
-    // s'il n'y a pas des d'erreurs
-    if (0 === count($hasErrors)) {
-        // on stock nos données et params en session
-        $_SESSION['client'] = $tempData;
-        add_flash("Bienvenue {$tempData['login']} !");
-    } else {
-        // sinon, on donne le feedback des champs invalides
-        add_flash(get_errors($hasErrors, $tempData), 'error_connexion');
 
-        // et on détruit la session
-        logout();
+
+    // une fois qu'on a finir de traiter toutes les erreurs possibles, on agit
+    if (0 === count($hasErrors)) {
+
+
+    } else {
+
+        add_flash(get_errors($hasErrors, $tempData), 'badSearch');
     }
+
 }

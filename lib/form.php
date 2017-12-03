@@ -68,6 +68,9 @@ function check_field($name, $value, $option = '')
         case 'surface':
             $output = check_surface($name, $value);
             break;
+        case 'adresse':
+            $output = check_adresse($name, $value);
+            break;
         case 'price':
             $output = check_surface($name, $value); //On a les mêmes exigences que pour la surface
             break;
@@ -226,17 +229,25 @@ function check_type($name, $value) {
     }
   }
 
-  function check_surface($name, $value) {
-    $value = trim($value);
-    $valuelength = strlen((string)$value); //On récupère la longueur de la variable
+function check_surface($name, $value) {
+    $value = intval(trim($value));
 
-    if((! is_null($value)) && (false != $value) && ($valuelength >= 3) && (preg_match('/[0-9]/', $value))) {
+    if((! is_null($value)) && (false != $value)) {
       return true;
     }
-    else {
       return false;
+}
+
+function check_adresse($name, $value) {
+    $value = trim($value);
+
+    if((! is_null($value)) && (false != $value) && strlen($value) >= 3)  {
+      return true;
     }
-  }
+      return false;
+}
+
+
 
   function check_city($name, $value) {
     $value = trim($value);
@@ -287,12 +298,13 @@ function errorMsg($name)
         'login'            => "l'identifiant doit avoir au moins 3 caractères",
         'password'         => 'le mot de passe doit avoir au moins 8 caractères',
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
-        'type' => 'mauvaise sélection',
-        'surface' => 'La surface doit contenir au moins 3 chiffres',
+        'type' => "ce type n'est pas disponible",
+        'surface' => 'La surface doit être supérieure à 9m<sup>2</sup>',
         'price' => 'le prix doit contenir au moins 3 chiffres',
         'adress' => 'l\'adresse doit avoir au moins 3 caractères',
         'city' => 'la ville doit avoir au moins 3 caractères et ne peut pas comporter de chiffre',
         'zip' => 'le code postal doit contenir 5 chiffres',
+        'adresse' => "l'adresse doit contenir au moins 3 caractères"
     ];
 
     $inputs = [
@@ -305,6 +317,7 @@ function errorMsg($name)
         'adress' => 'adresse',
         'city' => 'ville',
         'zip' => 'code postal',
+        'adresse' => 'adresse'
     ];
 
     return "<p>Le champ <strong>{$inputs[$name]}</strong> est invalide : {$messages[$name]}.</p>";
@@ -409,15 +422,9 @@ $filter_annoucement = [
 
 //tableau des filtres pour recherche.php
 $filter_search = [
-    'adresse' => [
-          'filter'  => FILTER_CALLBACK,
-          'options' => 'sanitize_string',
-      ],
-    'surface' => [
-          'filter'  => FILTER_CALLBACK,
-          'options' => 'sanitize_string',
-      ],
-      'type' => [
+    'adresse' => FILTER_SANITIZE_STRING,
+    'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
+    'type' => [
         'filter' => FILTER_CALLBACK,
         'options' => function ($input) {
             // si la valeur est vide, la réponse est vide, sinon elle prend la valeur
