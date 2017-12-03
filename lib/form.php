@@ -218,7 +218,7 @@ function check_password_confirm($name, $value, $option)
 function check_type($name, $value) {
   $value = trim($value);
 
-  if ((! is_null($value)) && (false != $value)) {
+  if ((! is_null($value)) && (false != $value) && ($value != 0)) {
       return true;
   }
   else {
@@ -230,7 +230,7 @@ function check_surface($name, $value) {
   $value = trim($value);
   $valuelength = strlen((string)$value); //On récupère la longueur de la variable
 
-  if((! is_null($value)) && (false != $value) && ($valuelength >= 3) && (preg_match('/[0-9]/', $value))) {
+  if((! is_null($value)) && (false != $value) && ($valuelength >= 3) && (!preg_match('/[A-Z][a-z]/', $value))) {
     return true;
   }
   else {
@@ -385,12 +385,10 @@ $filter_annoucement = [
       'options' => 'sanitize_string',
   ],
   'surface' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_number_int',
+      'filter' => FILTER_SANITIZE_NUMBER_INT,
   ],
   'price' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_number_int',
+      'filter' => FILTER_SANITIZE_NUMBER_INT,
   ],
   'adress' => [
       'filter' => FILTER_CALLBACK,
@@ -401,7 +399,6 @@ $filter_annoucement = [
       'options' => 'sanitize_string',
   ],
   'zip' => [
-      'filter' => FILTER_CALLBACK,
-      'options' => 'sanitize_number_int',
+      'filter' => FILTER_SANITIZE_NUMBER_INT,
   ],
 ];

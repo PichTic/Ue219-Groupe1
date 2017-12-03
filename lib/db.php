@@ -150,7 +150,7 @@ function annoucement_create($db, $adress, $type, $surface) {
   $connect = connect($db);
   $query = $connect->prepare($sql);
   $created = $query->execute([
-      'adresse' => $adresse,
+      'adresse' => $adress,
       'type' => $type,
       'surface' => $surface,
   ]);
@@ -168,9 +168,9 @@ function annoucement_search_full($db, $adress, $type, $surface) {
   // substitution de l'entrées de $login  à la place de ':login'
   // et exécute la requête
   $query->execute([
-      'adresse' => $adress,
+      'adress' => $adress,
       'type' => $type,
-      'surface' => $surface,
+      'surface' => $surface
   ]);
   // récupération des données
   $data = $query->fetchAll();

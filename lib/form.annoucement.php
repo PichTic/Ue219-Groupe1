@@ -20,11 +20,11 @@ if (filter_has_var(INPUT_POST, 'post_announcement')) {
     }
 
     //Fusion des différents éléments de l'adresse pour l'entrée dans la base
-    $tempData['surface'] = $tempData['surface'] . ", " . $tempData['zip'] . " " . $tempData['city'];
+    $surface = $tempData['surface'] = $tempData['surface'] . ", " . $tempData['zip'] . " " . $tempData['city'];
 
     // s'il n'y a pas des d'erreurs
     if (0 === count($hasErrors)) {
-        $data = annoucement_search_full($db, $tempData['adress'], $tempData['type'], $tempData['surface']);
+        $data = annoucement_search_full($db, $tempData['adress'], $tempData['type'], $surface);
 
         $created = false;
 
@@ -49,8 +49,6 @@ if (filter_has_var(INPUT_POST, 'post_announcement')) {
     }
     if (count($hasErrors) > 0) {
         // sinon, on donne le feedback des champs invalides
-        add_flash(get_errors($hasErrors, $tempData), 'error_register');
-        // et on détruit la session
-        logout('annonces-post.php');
+        add_flash(get_errors($hasErrors, $tempData), 'error_annonce');
     }
 }
