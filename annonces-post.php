@@ -59,7 +59,7 @@ auth_only();
 
           <div class="form-group col-md-3">
             <label for="zipcode" class="sr-only">Code Postal</label>
-            <input type="number" class="form-control" id="zipcode" name="zipcode" placeholder="Code Postale" value="<?php echo (array_key_exists('zipcode', $tempData)) ? $tempData['zipcode'] : '' ?>">
+            <input type="number" class="form-control" id="zipcode" name="zipcode" placeholder="Code Postal" value="<?php echo (array_key_exists('zipcode', $tempData)) ? $tempData['zipcode'] : '' ?>">
           </div>
 
           <div class="form-group col-md-3">
