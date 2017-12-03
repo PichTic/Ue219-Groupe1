@@ -22,12 +22,13 @@ if (filter_has_var(INPUT_POST, 'create')) {
 
     // s'il n'y a pas des d'erreurs
     if (0 === count($hasErrors)) {
-        $data = adDuplicate($db, $tempData['adresse'], $tempData['type'], $tempData['surface']);
+        $tempData['adress'] .= ", ".$tempData['zip']." ".$tempData['city'];
+        $data = adDuplicate($db, $tempData['adress'], $tempData['type'], $tempData['surface']);
         $created = false;
 
         // s'il n'y as pas d'annonce en doublon
         if (0 === count($data)) {
-            $created = adCreate($db, $tempData['adresse'], $tempData['type'], $tempData['surface']);
+            $created = adCreate($db, $tempData['adress'], $tempData['type'], $tempData['surface']);
         } else {
             $hasErrors[] = 'duplicate';
             $tempData['duplicate'] = '<p>Cette annonce existe déjà</p>';

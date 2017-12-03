@@ -56,8 +56,14 @@ function check_field($name, $value, $option = '')
         case 'surface':
             $output = check_surface($name, $value);
             break;
-        case 'adresse':
+        case 'adress':
             $output = check_adresse($name, $value);
+            break;
+        case 'city':
+            $output = check_city($name, $value);
+            break;
+        case 'zip':
+            $output = check_zip($name, $value);
             break;
     }
 
@@ -124,7 +130,7 @@ function check_password_confirm($name, $value, $option)
 
 
 /**
- * Vérifie le champ password.
+ * Vérifie le champ type.
  *
  * @param string $name
  * @param string $value
@@ -137,13 +143,11 @@ function check_type($name, $value) {
     if ((! is_null($value)) && (false != $value)) {
         return true;
     }
-    else {
       return false;
-    }
   }
 
 /**
- * Vérifie le champ password.
+ *
  *
  * @param string $name
  * @param string $value
@@ -168,6 +172,24 @@ function check_adresse($name, $value) {
       return false;
 }
 
+function check_city($name, $value) {
+    $value = trim($value);
+
+    if((! is_null($value)) && (false != $value) && (strlen($value) >= 3) && (strpbrk($value, '1234567890') === FALSE))  {
+      return true;
+    }
+      return false;
+}
+
+function check_zip($name, $value) {
+    $value = intval(trim($value));
+    $valuelength = strlen((string)$value); //Récupération de la longueur du code postal
+
+    if((! is_null($value)) && (false != $value) && ($valuelength == 5)) {
+      return true;
+    }
+      return false;
+}
 
 
 
@@ -193,12 +215,14 @@ function check_adresse($name, $value) {
 function errorMsg($name)
 {
     $messages = [
-        'login'            => "l'identifiant doit avoir au moins 3 caractères",
+        'login'            => 'l\'identifiant doit avoir au moins 3 caractères',
         'password'         => 'le mot de passe doit avoir au moins 8 caractères',
         'password_confirm' => 'les deux mots de passe ne sont pas identiques',
-        'type' => "ce type n'est pas disponible",
+        'type' => 'ce type n\'est pas disponible',
         'surface' => 'La surface doit être supérieure à 9m<sup>2</sup>',
-        'adresse' => "l'adresse doit contenir au moins 3 caractères"
+        'adress' => 'l\'adresse doit contenir au moins 3 caractères',
+        'city' => 'la ville doit contenir au moins 3 caractères et aucun chiffre',
+        'zip' => 'le code postal ne peut contenir que 5 chiffres'
     ];
 
     $inputs = [
@@ -207,7 +231,9 @@ function errorMsg($name)
         'password_confirm' => 'confirmation du mot de passe',
         'type' => 'type de bien',
         'surface' => 'surface',
-        'adresse' => 'adresse'
+        'adress' => 'adresse',
+        'city' => 'ville',
+        'zip' => 'code postal'
     ];
 
     return "<p>Le champ <strong>{$inputs[$name]}</strong> est invalide : {$messages[$name]}.</p>";
@@ -298,13 +324,18 @@ $filter_register = [
 $filter_adCreate = [
     'type' => [
         'filter' => FILTER_CALLBACK,
-        'options' => 'filter_type'
+        'options' => 'sanitize_string'
     ],
     'surface' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
-    'adresse' => [
+    'adress' => [
         'filter' => FILTER_CALLBACK,
         'options' => 'sanitize_string',
     ],
+    'city' => [
+        'filter' => FILTER_CALLBACK,
+        'options' => 'sanitize_string',
+    ],
+    'zip' => FILTER_SANITIZE_NUMBER_INT|FILTER_VALIDATE_INT,
   ];
 
 //tableau des filtres pour recherche.php
